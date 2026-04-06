@@ -6,9 +6,10 @@
   <title>Bond Scenario Simulator | BondStats</title>
   <style>
     :root {
-      --bg: #07111f;
-      --panel: rgba(12, 20, 34, 0.96);
-      --panel-2: rgba(16, 24, 39, 0.96);
+      --bg: #06101d;
+      --panel: rgba(10, 18, 30, 0.96);
+      --panel-2: rgba(14, 24, 39, 0.96);
+      --panel-3: rgba(255,255,255,0.03);
       --border: rgba(255,255,255,0.08);
       --text: #f8fafc;
       --muted: #94a3b8;
@@ -17,7 +18,8 @@
       --green: #22c55e;
       --yellow: #f59e0b;
       --red: #ef4444;
-      --shadow: 0 18px 44px rgba(0,0,0,0.30);
+      --purple: #8b5cf6;
+      --shadow: 0 18px 44px rgba(0,0,0,0.32);
       --radius: 20px;
     }
 
@@ -28,14 +30,14 @@
       font-family: Arial, sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at top left, rgba(59,130,246,0.18), transparent 28%),
-        radial-gradient(circle at top right, rgba(96,165,250,0.08), transparent 20%),
-        linear-gradient(180deg, #07111f 0%, #0b1322 100%);
-      padding: 32px 18px 60px;
+        radial-gradient(circle at top left, rgba(59,130,246,0.18), transparent 24%),
+        radial-gradient(circle at top right, rgba(139,92,246,0.08), transparent 18%),
+        linear-gradient(180deg, #06101d 0%, #0a1322 100%);
+      padding: 24px 16px 60px;
     }
 
     .wrap {
-      max-width: 1240px;
+      max-width: 1360px;
       margin: 0 auto;
     }
 
@@ -43,36 +45,78 @@
       margin-bottom: 22px;
     }
 
+    .eyebrow {
+      display: inline-block;
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #dbeafe;
+      background: rgba(59,130,246,0.12);
+      border: 1px solid rgba(59,130,246,0.28);
+      margin-bottom: 12px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
     h1 {
       margin: 0 0 10px;
-      font-size: 60px;
-      line-height: 1;
-      letter-spacing: -0.04em;
+      font-size: 62px;
+      line-height: 0.98;
+      letter-spacing: -0.045em;
     }
 
     .sub {
       margin: 0;
-      max-width: 920px;
+      max-width: 980px;
       color: var(--muted);
       font-size: 18px;
-      line-height: 1.65;
+      line-height: 1.7;
     }
 
     .notice {
       margin-top: 18px;
-      background: rgba(59,130,246,0.12);
-      border: 1px solid rgba(59,130,246,0.28);
+      background: rgba(59,130,246,0.10);
+      border: 1px solid rgba(59,130,246,0.22);
       color: #dbeafe;
-      padding: 14px 16px;
+      padding: 15px 16px;
       border-radius: 14px;
       line-height: 1.55;
     }
 
-    .top-grid {
+    .top-kpis {
       display: grid;
-      grid-template-columns: 1.12fr 0.88fr;
-      gap: 18px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
       margin-top: 22px;
+      margin-bottom: 20px;
+    }
+
+    .kpi {
+      background: linear-gradient(180deg, rgba(12,20,34,0.98), rgba(14,24,39,0.98));
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+
+    .kpi-label {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .kpi-value {
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 18px;
       margin-bottom: 18px;
     }
 
@@ -98,22 +142,10 @@
       letter-spacing: -0.02em;
     }
 
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-    }
-
-    .grid-4 {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
+    h3 {
+      margin: 0 0 12px;
+      font-size: 20px;
+      letter-spacing: -0.02em;
     }
 
     label {
@@ -132,9 +164,16 @@
       box-sizing: border-box;
     }
 
-    input, select, textarea {
+    input, select {
       background: #ffffff;
       color: #111827;
+    }
+
+    textarea {
+      background: rgba(255,255,255,0.04);
+      color: white;
+      min-height: 120px;
+      resize: vertical;
     }
 
     button {
@@ -153,6 +192,36 @@
       background: rgba(255,255,255,0.07);
       border: 1px solid rgba(255,255,255,0.08);
       color: white;
+    }
+
+    .danger-btn {
+      background: rgba(239,68,68,0.14);
+      border: 1px solid rgba(239,68,68,0.20);
+      color: #fecaca;
+    }
+
+    .success-btn {
+      background: rgba(34,197,94,0.16);
+      border: 1px solid rgba(34,197,94,0.22);
+      color: #bbf7d0;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
     }
 
     .preset-row {
@@ -176,25 +245,32 @@
 
     .toolbar {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: repeat(3, 1fr);
       gap: 12px;
       margin-top: 14px;
     }
 
-    .stat {
+    .toolbar-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .metric-card {
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(255,255,255,0.06);
       border-radius: 18px;
       padding: 18px;
     }
 
-    .stat-label {
+    .metric-label {
       color: var(--muted);
       font-size: 13px;
       margin-bottom: 8px;
     }
 
-    .stat-value {
+    .metric-value {
       font-size: 31px;
       font-weight: 700;
       line-height: 1.05;
@@ -242,11 +318,11 @@
       border: 1px solid rgba(239,68,68,0.22);
     }
 
-    textarea {
-      min-height: 130px;
-      resize: vertical;
-      background: rgba(255,255,255,0.04);
-      color: white;
+    .mini-note {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+      margin-top: 14px;
     }
 
     .mid-grid {
@@ -254,13 +330,6 @@
       grid-template-columns: 1fr 1fr;
       gap: 18px;
       margin-top: 18px;
-    }
-
-    .mini-note {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.6;
-      margin-top: 14px;
     }
 
     .chart-wrap {
@@ -273,7 +342,7 @@
 
     canvas {
       width: 100%;
-      height: 300px;
+      height: 320px;
       display: block;
       border-radius: 14px;
       background: rgba(255,255,255,0.02);
@@ -299,6 +368,36 @@
       color: var(--muted);
       background: rgba(255,255,255,0.03);
       font-size: 13px;
+    }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .scenario-mini {
+      border-radius: 18px;
+      padding: 18px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.025));
+    }
+
+    .scenario-mini.base { border-color: rgba(59,130,246,0.20); }
+    .scenario-mini.hawkish { border-color: rgba(239,68,68,0.20); }
+    .scenario-mini.dovish { border-color: rgba(34,197,94,0.20); }
+
+    .scenario-mini-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .scenario-mini-meta {
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
     }
 
     .saved-list {
@@ -337,10 +436,49 @@
       border-radius: 12px;
     }
 
-    .danger-btn {
-      background: rgba(239,68,68,0.16);
-      border: 1px solid rgba(239,68,68,0.24);
-      color: #fecaca;
+    .portfolio-controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+      margin-bottom: 12px;
+    }
+
+    .portfolio-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .bond-row {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .bond-row-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .bond-row-title {
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      background: rgba(255,255,255,0.07);
+      color: #dbeafe;
+      border: 1px solid rgba(255,255,255,0.08);
     }
 
     .footer-note {
@@ -350,30 +488,42 @@
       margin-top: 18px;
     }
 
-    @media (max-width: 1020px) {
-      .top-grid,
+    @media (max-width: 1080px) {
+      .top-kpis,
+      .grid-4,
+      .compare-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .layout,
       .mid-grid {
         grid-template-columns: 1fr;
       }
 
-      .grid-4 {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
       h1 {
-        font-size: 46px;
+        font-size: 48px;
       }
 
-      .toolbar {
+      .toolbar,
+      .toolbar-2 {
         grid-template-columns: 1fr;
       }
     }
 
-    @media (max-width: 640px) {
+    @media (max-width: 680px) {
       .grid-2,
       .grid-3,
-      .grid-4 {
+      .grid-4,
+      .top-kpis,
+      .compare-grid,
+      .portfolio-controls {
         grid-template-columns: 1fr;
+      }
+
+      .saved-item,
+      .bond-row-top {
+        flex-direction: column;
+        align-items: flex-start;
       }
     }
   </style>
@@ -381,19 +531,39 @@
 <body>
   <div class="wrap">
     <div class="hero">
+      <div class="eyebrow">BondStats Tool</div>
       <h1>Bond Scenario Simulator</h1>
       <p class="sub">
-        Estimate how bond prices react to rate shocks using modified duration and convexity. Built to turn fixed-income intuition into a clean scenario workflow.
+        Model single-bond and portfolio-level rate sensitivity with a structured scenario workflow. Designed to feel less like a calculator and more like a fixed-income decision tool.
       </p>
       <div class="notice">
-        This is a scenario analysis tool, not investment advice. It helps frame bond sensitivity under different yield environments using standard fixed-income approximations.
+        This tool estimates bond sensitivity using modified duration and convexity. It is intended for scenario analysis and risk framing, not investment advice.
       </div>
     </div>
 
-    <div class="top-grid">
+    <div class="top-kpis">
+      <div class="kpi">
+        <div class="kpi-label">Mode</div>
+        <div class="kpi-value">Single + Portfolio</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Core Method</div>
+        <div class="kpi-value">Duration + Convexity</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Output Style</div>
+        <div class="kpi-value">Price / P&L / DV01</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Designed For</div>
+        <div class="kpi-value">Rates Awareness</div>
+      </div>
+    </div>
+
+    <div class="layout">
       <div class="card">
-        <div class="section-label">Scenario Setup</div>
-        <h2>Configure Your Shock</h2>
+        <div class="section-label">Single Bond Setup</div>
+        <h2>Configure Your Base Shock</h2>
 
         <div class="grid-2">
           <div>
@@ -458,42 +628,42 @@
         </div>
 
         <div class="chart-wrap">
-          <div class="section-label" style="margin-bottom:8px;">Shock Profile</div>
-          <canvas id="shockChart" width="900" height="300"></canvas>
+          <div class="section-label" style="margin-bottom:8px;">Single Bond Sensitivity Curve</div>
+          <canvas id="shockChart" width="920" height="320"></canvas>
         </div>
       </div>
 
       <div class="card">
-        <div class="section-label">Scenario Result</div>
+        <div class="section-label">Single Bond Result</div>
         <h2>Estimated Impact</h2>
 
         <div class="grid-4">
-          <div class="stat">
-            <div class="stat-label">Price Change</div>
-            <div class="stat-value" id="priceChangeStat">-</div>
+          <div class="metric-card">
+            <div class="metric-label">Price Change</div>
+            <div class="metric-value" id="priceChangeStat">-</div>
           </div>
-          <div class="stat">
-            <div class="stat-label">Estimated P/L</div>
-            <div class="stat-value" id="plStat">-</div>
+          <div class="metric-card">
+            <div class="metric-label">Estimated P/L</div>
+            <div class="metric-value" id="plStat">-</div>
           </div>
-          <div class="stat">
-            <div class="stat-label">New Yield</div>
-            <div class="stat-value" id="newYieldStat">-</div>
+          <div class="metric-card">
+            <div class="metric-label">New Yield</div>
+            <div class="metric-value" id="newYieldStat">-</div>
           </div>
-          <div class="stat">
-            <div class="stat-label">DV01</div>
-            <div class="stat-value" id="dv01Stat">-</div>
+          <div class="metric-card">
+            <div class="metric-label">DV01</div>
+            <div class="metric-value" id="dv01Stat">-</div>
           </div>
         </div>
 
         <div class="grid-2" style="margin-top:14px;">
-          <div class="stat">
-            <div class="stat-label">Scenario Type</div>
-            <div class="stat-value" id="scenarioTypeStat">-</div>
+          <div class="metric-card">
+            <div class="metric-label">Scenario Type</div>
+            <div class="metric-value" id="scenarioTypeStat">-</div>
           </div>
-          <div class="stat">
-            <div class="stat-label">Stress Score</div>
-            <div class="stat-value" id="stressScoreStat">-</div>
+          <div class="metric-card">
+            <div class="metric-label">Stress Score</div>
+            <div class="metric-value" id="stressScoreStat">-</div>
           </div>
         </div>
 
@@ -502,17 +672,72 @@
         </div>
 
         <textarea id="summaryBox" readonly></textarea>
+      </div>
+    </div>
 
-        <div class="footer-note">
-          Duration-only estimates are often useful for intuition. Convexity improves approximation quality for larger shocks.
+    <div class="card">
+      <div class="section-label">Scenario Compare</div>
+      <h2>Base vs Hawkish vs Dovish</h2>
+      <div class="compare-grid" id="scenarioCompareGrid"></div>
+    </div>
+
+    <div class="mid-grid">
+      <div class="card">
+        <div class="section-label">Portfolio Mode</div>
+        <h2>Rate Shock Across Multiple Bonds</h2>
+
+        <div class="portfolio-controls">
+          <button class="secondary-btn" onclick="addBondRow()">Add Bond</button>
+          <button class="danger-btn" onclick="resetPortfolio()">Reset Portfolio</button>
         </div>
+
+        <div id="portfolioList" class="portfolio-list"></div>
+
+        <div class="toolbar-2">
+          <button onclick="runPortfolioScenario()">Run Portfolio Scenario</button>
+          <button class="secondary-btn" onclick="savePortfolioScenario()">Save Portfolio Scenario</button>
+        </div>
+
+        <div class="mini-note">
+          Portfolio mode applies the same rate shock across multiple bonds and estimates aggregate portfolio-level P/L and DV01.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-label">Portfolio Output</div>
+        <h2>Portfolio Impact</h2>
+
+        <div class="grid-4">
+          <div class="metric-card">
+            <div class="metric-label">Total Position</div>
+            <div class="metric-value" id="portfolioPositionStat">-</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Portfolio P/L</div>
+            <div class="metric-value" id="portfolioPLStat">-</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Portfolio DV01</div>
+            <div class="metric-value" id="portfolioDV01Stat">-</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Avg Duration</div>
+            <div class="metric-value" id="portfolioDurationStat">-</div>
+          </div>
+        </div>
+
+        <div class="scenario-box" id="portfolioText">
+          Add bond rows and run a portfolio scenario to estimate total sensitivity under the selected shock.
+        </div>
+
+        <textarea id="portfolioSummaryBox" readonly></textarea>
       </div>
     </div>
 
     <div class="mid-grid">
       <div class="card">
-        <div class="section-label">Quick Reference</div>
-        <h2>Shock Comparison Grid</h2>
+        <div class="section-label">Shock Reference Grid</div>
+        <h2>Quick Comparison</h2>
         <table>
           <thead>
             <tr>
@@ -536,26 +761,32 @@
     </div>
 
     <div class="card" style="margin-top:18px;">
-      <div class="section-label">Use Cases</div>
-      <h2>Why This Tool Matters</h2>
+      <div class="section-label">Why It Matters</div>
+      <h2>Product Use Cases</h2>
       <div class="grid-3">
-        <div class="stat">
-          <div class="stat-label">Portfolio Stress</div>
-          <div class="neutral" style="line-height:1.6;">Estimate how a rate shock would affect a bond position before it happens.</div>
+        <div class="metric-card">
+          <div class="metric-label">Portfolio Stress</div>
+          <div class="neutral" style="line-height:1.6;">Estimate how a rate shock would affect a bond position or basket before it happens.</div>
         </div>
-        <div class="stat">
-          <div class="stat-label">Macro Framing</div>
-          <div class="neutral" style="line-height:1.6;">Translate hawkish or dovish scenarios into expected bond price sensitivity.</div>
+        <div class="metric-card">
+          <div class="metric-label">Macro Framing</div>
+          <div class="neutral" style="line-height:1.6;">Translate hawkish or dovish scenarios into expected fixed-income sensitivity.</div>
         </div>
-        <div class="stat">
-          <div class="stat-label">Duration Awareness</div>
-          <div class="neutral" style="line-height:1.6;">See why longer-duration exposure reacts more sharply to changes in yields.</div>
+        <div class="metric-card">
+          <div class="metric-label">Duration Awareness</div>
+          <div class="neutral" style="line-height:1.6;">Understand why long-duration exposure reacts more sharply to changes in yields.</div>
         </div>
+      </div>
+
+      <div class="footer-note">
+        This simulator is a decision-support tool, not a backtesting engine. It helps answer a practical question: what happens to bond prices if rates move?
       </div>
     </div>
   </div>
 
   <script>
+    let portfolioCounter = 0;
+
     function fmtPct(value) {
       const cls = value > 0 ? "positive" : value < 0 ? "negative" : "neutral";
       const sign = value > 0 ? "+" : "";
@@ -624,12 +855,7 @@
       return `With no rate shock applied, the bond is modeled as broadly unchanged. The simulated end-yield remains ${newYield.toFixed(2)}%.`;
     }
 
-    function computeScenario(shockBps) {
-      const currentYield = Number(document.getElementById("yieldInput").value);
-      const duration = Number(document.getElementById("durationInput").value);
-      const convexity = Number(document.getElementById("convexityInput").value);
-      const position = Number(document.getElementById("positionInput").value);
-
+    function computeScenario(shockBps, currentYield, duration, convexity, position) {
       const dy = shockBps / 10000;
       const priceChange = (-duration * dy) + (0.5 * convexity * dy * dy);
       const priceChangePct = priceChange * 100;
@@ -646,6 +872,20 @@
         pnl,
         newYield,
         dv01
+      };
+    }
+
+    function computeBaseScenario() {
+      const currentYield = Number(document.getElementById("yieldInput").value);
+      const shockBps = Number(document.getElementById("shockInput").value);
+      const duration = Number(document.getElementById("durationInput").value);
+      const convexity = Number(document.getElementById("convexityInput").value);
+      const position = Number(document.getElementById("positionInput").value);
+
+      return {
+        shockBps,
+        label: document.getElementById("nameInput").value || "Base Scenario",
+        result: computeScenario(shockBps, currentYield, duration, convexity, position)
       };
     }
 
@@ -668,10 +908,18 @@
 
     function renderComparison() {
       const compareBody = document.getElementById("compareBody");
+      const base = computeBaseScenario();
+      const baseInputs = base.result;
       const shocks = [-100, -50, -25, 25, 50, 100];
 
       compareBody.innerHTML = shocks.map(shock => {
-        const result = computeScenario(shock);
+        const result = computeScenario(
+          shock,
+          baseInputs.currentYield,
+          baseInputs.duration,
+          baseInputs.convexity,
+          baseInputs.position
+        );
         const interpretation =
           shock > 0 ? "Rates higher, price pressure" : "Rates lower, price support";
 
@@ -686,27 +934,68 @@
       }).join("");
     }
 
+    function renderScenarioCompare() {
+      const base = computeBaseScenario();
+      const baseInputs = base.result;
+
+      const scenarios = [
+        { title: "Base", shock: base.shockBps, cls: "base" },
+        { title: "Hawkish", shock: Math.max(base.shockBps, 50), cls: "hawkish" },
+        { title: "Dovish", shock: Math.min(-50, base.shockBps < 0 ? base.shockBps : -50), cls: "dovish" }
+      ];
+
+      const box = document.getElementById("scenarioCompareGrid");
+
+      box.innerHTML = scenarios.map(s => {
+        const result = computeScenario(
+          s.shock,
+          baseInputs.currentYield,
+          baseInputs.duration,
+          baseInputs.convexity,
+          baseInputs.position
+        );
+
+        return `
+          <div class="scenario-mini ${s.cls}">
+            <div class="scenario-mini-title">${s.title}</div>
+            <div class="scenario-mini-meta">
+              Shock: ${s.shock > 0 ? "+" : ""}${s.shock} bps<br>
+              Price Change: ${result.priceChangePct.toFixed(2)}%<br>
+              P/L: ${fmtPlainMoney(result.pnl)}<br>
+              New Yield: ${result.newYield.toFixed(2)}%
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
     function drawChart() {
       const canvas = document.getElementById("shockChart");
       const ctx = canvas.getContext("2d");
       const width = canvas.width;
       const height = canvas.height;
+      const base = computeBaseScenario();
+      const baseInputs = base.result;
 
       ctx.clearRect(0, 0, width, height);
 
       const shocks = [];
-      for (let s = -200; s <= 200; s += 10) {
-        shocks.push(s);
-      }
+      for (let s = -200; s <= 200; s += 10) shocks.push(s);
 
       const points = shocks.map(s => {
-        const res = computeScenario(s);
+        const res = computeScenario(
+          s,
+          baseInputs.currentYield,
+          baseInputs.duration,
+          baseInputs.convexity,
+          baseInputs.position
+        );
         return { shock: s, value: res.priceChangePct };
       });
 
       const minY = Math.min(...points.map(p => p.value));
       const maxY = Math.max(...points.map(p => p.value));
-      const pad = 30;
+      const pad = 36;
 
       function xScale(x) {
         return pad + ((x + 200) / 400) * (width - pad * 2);
@@ -739,33 +1028,34 @@
         if (i === 0) ctx.moveTo(x, y);
         else ctx.lineTo(x, y);
       });
-
       ctx.stroke();
 
-      const currentShock = Number(document.getElementById("shockInput").value);
-      const current = computeScenario(currentShock);
+      const currentShock = base.shockBps;
+      const current = computeScenario(
+        currentShock,
+        baseInputs.currentYield,
+        baseInputs.duration,
+        baseInputs.convexity,
+        baseInputs.position
+      );
 
       ctx.fillStyle = "#22c55e";
       ctx.beginPath();
-      ctx.arc(xScale(currentShock), yScale(current.priceChangePct), 5, 0, Math.PI * 2);
+      ctx.arc(xScale(currentShock), yScale(current.priceChangePct), 6, 0, Math.PI * 2);
       ctx.fill();
 
-      ctx.fillStyle = "rgba(255,255,255,0.7)";
+      ctx.fillStyle = "rgba(255,255,255,0.72)";
       ctx.font = "12px Arial";
-      ctx.fillText("-200bps", xScale(-200) - 18, height - 8);
-      ctx.fillText("0", xScale(0) - 4, height - 8);
-      ctx.fillText("+200bps", xScale(200) - 18, height - 8);
+      ctx.fillText("-200", xScale(-200) - 15, height - 10);
+      ctx.fillText("0", xScale(0) - 4, height - 10);
+      ctx.fillText("+200", xScale(200) - 15, height - 10);
     }
 
     function runScenario() {
-      const shockBps = Number(document.getElementById("shockInput").value);
-      const label = document.getElementById("nameInput").value || "Scenario";
-
-      if (!Number.isFinite(shockBps)) return;
-
-      const result = computeScenario(shockBps);
-      const scenarioType = classifyScenario(shockBps);
-      const stress = stressScore(shockBps, result.duration);
+      const base = computeBaseScenario();
+      const result = base.result;
+      const scenarioType = classifyScenario(base.shockBps);
+      const stress = stressScore(base.shockBps, result.duration);
 
       document.getElementById("priceChangeStat").innerHTML = fmtPct(result.priceChangePct);
       document.getElementById("plStat").innerHTML = fmtMoney(result.pnl);
@@ -776,12 +1066,13 @@
         `<span class="score-pill ${stress.cls}">${stress.text}</span>`;
 
       document.getElementById("scenarioText").textContent =
-        `${label}: ${scenarioNarrative(shockBps, result.priceChangePct, result.newYield)}`;
+        `${base.label}: ${scenarioNarrative(base.shockBps, result.priceChangePct, result.newYield)}`;
 
       document.getElementById("summaryBox").value =
-        buildSummary(label, shockBps, result, scenarioType, stress);
+        buildSummary(base.label, base.shockBps, result, scenarioType, stress);
 
       renderComparison();
+      renderScenarioCompare();
       drawChart();
     }
 
@@ -797,44 +1088,43 @@
 
     function getSavedScenarios() {
       try {
-        return JSON.parse(localStorage.getItem("bondstats_saved_scenarios") || "[]");
+        return JSON.parse(localStorage.getItem("bondstats_saved_scenarios_v4") || "[]");
       } catch {
         return [];
       }
     }
 
     function setSavedScenarios(items) {
-      localStorage.setItem("bondstats_saved_scenarios", JSON.stringify(items));
+      localStorage.setItem("bondstats_saved_scenarios_v4", JSON.stringify(items));
     }
 
     function saveScenario() {
-      const shockBps = Number(document.getElementById("shockInput").value);
-      const label = document.getElementById("nameInput").value || "Scenario";
-      const result = computeScenario(shockBps);
+      const base = computeBaseScenario();
 
       const item = {
         id: Date.now(),
-        label,
-        yield: result.currentYield,
-        shock: shockBps,
-        duration: result.duration,
-        convexity: result.convexity,
-        position: result.position,
-        priceChangePct: result.priceChangePct,
-        pnl: result.pnl,
-        createdAt: new Date().toISOString()
+        label: base.label,
+        yield: base.result.currentYield,
+        shock: base.shockBps,
+        duration: base.result.duration,
+        convexity: base.result.convexity,
+        position: base.result.position,
+        priceChangePct: base.result.priceChangePct,
+        pnl: base.result.pnl,
+        createdAt: new Date().toISOString(),
+        kind: "single"
       };
 
       const items = getSavedScenarios();
       items.unshift(item);
-      setSavedScenarios(items.slice(0, 12));
+      setSavedScenarios(items.slice(0, 18));
       renderSavedScenarios();
       alert("Scenario saved.");
     }
 
     function loadSavedScenario(id) {
       const item = getSavedScenarios().find(x => x.id === id);
-      if (!item) return;
+      if (!item || item.kind !== "single") return;
 
       document.getElementById("nameInput").value = item.label;
       document.getElementById("yieldInput").value = item.yield;
@@ -842,6 +1132,7 @@
       document.getElementById("durationInput").value = item.duration;
       document.getElementById("convexityInput").value = item.convexity;
       document.getElementById("positionInput").value = item.position;
+      document.getElementById("bondPreset").value = "custom";
 
       runScenario();
     }
@@ -866,21 +1157,203 @@
           <div>
             <div style="font-weight:700; margin-bottom:6px;">${item.label}</div>
             <div class="saved-meta">
+              ${item.kind === "portfolio" ? "Portfolio" : "Single Bond"} •
               Shock: ${item.shock > 0 ? "+" : ""}${item.shock} bps •
-              Yield: ${Number(item.yield).toFixed(2)}% •
               P/L: ${fmtPlainMoney(item.pnl)}
             </div>
           </div>
           <div class="saved-actions">
-            <button class="small-btn secondary-btn" onclick="loadSavedScenario(${item.id})">Load</button>
+            ${item.kind === "single" ? `<button class="small-btn secondary-btn" onclick="loadSavedScenario(${item.id})">Load</button>` : ``}
             <button class="small-btn danger-btn" onclick="deleteSavedScenario(${item.id})">Delete</button>
           </div>
         </div>
       `).join("");
     }
 
+    function addBondRow(defaults = {}) {
+      if (document.querySelectorAll(".bond-row").length >= 5) {
+        alert("Portfolio mode supports up to 5 bonds in this version.");
+        return;
+      }
+
+      portfolioCounter += 1;
+      const id = portfolioCounter;
+      const container = document.getElementById("portfolioList");
+      const row = document.createElement("div");
+      row.className = "bond-row";
+      row.dataset.id = id;
+
+      row.innerHTML = `
+        <div class="bond-row-top">
+          <div class="bond-row-title">Bond ${id}</div>
+          <div class="saved-actions">
+            <span class="pill">Portfolio Line</span>
+            <button class="small-btn danger-btn" onclick="removeBondRow(${id})">Remove</button>
+          </div>
+        </div>
+        <div class="grid-4">
+          <div>
+            <label>Label</label>
+            <input type="text" class="bond-label" value="${defaults.label || `Bond ${id}`}" />
+          </div>
+          <div>
+            <label>Yield (%)</label>
+            <input type="number" step="0.01" class="bond-yield" value="${defaults.yield ?? 4.25}" />
+          </div>
+          <div>
+            <label>Duration</label>
+            <input type="number" step="0.01" class="bond-duration" value="${defaults.duration ?? 7.5}" />
+          </div>
+          <div>
+            <label>Convexity</label>
+            <input type="number" step="0.01" class="bond-convexity" value="${defaults.convexity ?? 0.8}" />
+          </div>
+        </div>
+        <div class="grid-2" style="margin-top:12px;">
+          <div>
+            <label>Position Size ($)</label>
+            <input type="number" step="1000" class="bond-position" value="${defaults.position ?? 100000}" />
+          </div>
+          <div>
+            <label>Preset</label>
+            <select class="bond-preset" onchange="applyPortfolioPreset(this)">
+              <option value="custom">Custom</option>
+              <option value="short">2Y Treasury-like</option>
+              <option value="intermediate">5Y Treasury-like</option>
+              <option value="benchmark" selected>10Y Treasury-like</option>
+              <option value="long">30Y Treasury-like</option>
+            </select>
+          </div>
+        </div>
+      `;
+
+      container.appendChild(row);
+    }
+
+    function removeBondRow(id) {
+      const row = document.querySelector(`.bond-row[data-id="${id}"]`);
+      if (row) row.remove();
+      if (!document.querySelectorAll(".bond-row").length) {
+        addBondRow();
+      }
+    }
+
+    function applyPortfolioPreset(selectEl) {
+      const row = selectEl.closest(".bond-row");
+      const durationInput = row.querySelector(".bond-duration");
+      const convexityInput = row.querySelector(".bond-convexity");
+
+      const presets = {
+        short: { duration: 1.9, convexity: 0.10 },
+        intermediate: { duration: 4.7, convexity: 0.35 },
+        benchmark: { duration: 7.5, convexity: 0.80 },
+        long: { duration: 17.5, convexity: 3.20 }
+      };
+
+      const preset = selectEl.value;
+      if (preset !== "custom" && presets[preset]) {
+        durationInput.value = presets[preset].duration;
+        convexityInput.value = presets[preset].convexity;
+      }
+    }
+
+    function resetPortfolio() {
+      document.getElementById("portfolioList").innerHTML = "";
+      portfolioCounter = 0;
+      addBondRow();
+      document.getElementById("portfolioText").textContent =
+        "Add bond rows and run a portfolio scenario to estimate total sensitivity under the selected shock.";
+      document.getElementById("portfolioSummaryBox").value = "";
+      document.getElementById("portfolioPositionStat").textContent = "-";
+      document.getElementById("portfolioPLStat").textContent = "-";
+      document.getElementById("portfolioDV01Stat").textContent = "-";
+      document.getElementById("portfolioDurationStat").textContent = "-";
+    }
+
+    function runPortfolioScenario() {
+      const shockBps = Number(document.getElementById("shockInput").value);
+      const rows = [...document.querySelectorAll(".bond-row")];
+
+      let totalPosition = 0;
+      let totalPL = 0;
+      let totalDV01 = 0;
+      let weightedDurationSum = 0;
+      const lines = [];
+
+      rows.forEach(row => {
+        const label = row.querySelector(".bond-label").value || "Bond";
+        const y = Number(row.querySelector(".bond-yield").value);
+        const d = Number(row.querySelector(".bond-duration").value);
+        const c = Number(row.querySelector(".bond-convexity").value);
+        const p = Number(row.querySelector(".bond-position").value);
+
+        const result = computeScenario(shockBps, y, d, c, p);
+
+        totalPosition += p;
+        totalPL += result.pnl;
+        totalDV01 += result.dv01;
+        weightedDurationSum += d * p;
+
+        lines.push(
+          `${label}: ${shockBps > 0 ? "+" : ""}${shockBps} bps → ${result.priceChangePct.toFixed(2)}% | ${fmtPlainMoney(result.pnl)}`
+        );
+      });
+
+      const avgDuration = totalPosition > 0 ? weightedDurationSum / totalPosition : 0;
+
+      document.getElementById("portfolioPositionStat").textContent =
+        "$" + totalPosition.toLocaleString(undefined, { maximumFractionDigits: 0 });
+      document.getElementById("portfolioPLStat").innerHTML = fmtMoney(totalPL);
+      document.getElementById("portfolioDV01Stat").textContent =
+        "$" + totalDV01.toLocaleString(undefined, { maximumFractionDigits: 0 });
+      document.getElementById("portfolioDurationStat").textContent =
+        avgDuration.toFixed(2);
+
+      document.getElementById("portfolioText").textContent =
+        `Under a ${shockBps > 0 ? "+" : ""}${shockBps} bps rate shock, the modeled portfolio P/L is ${fmtPlainMoney(totalPL)} across $${totalPosition.toLocaleString()} of notional exposure.`;
+
+      document.getElementById("portfolioSummaryBox").value = [
+        `Portfolio Scenario`,
+        `Rate Shock: ${shockBps > 0 ? "+" : ""}${shockBps} bps`,
+        `Total Position: $${totalPosition.toLocaleString()}`,
+        `Portfolio P/L: ${fmtPlainMoney(totalPL)}`,
+        `Portfolio DV01: $${totalDV01.toLocaleString(undefined, { maximumFractionDigits: 0 })}`,
+        `Average Duration: ${avgDuration.toFixed(2)}`,
+        ``,
+        ...lines
+      ].join("\n");
+    }
+
+    function savePortfolioScenario() {
+      const shockBps = Number(document.getElementById("shockInput").value);
+      const summary = document.getElementById("portfolioSummaryBox").value;
+      const totalPositionText = document.getElementById("portfolioPositionStat").textContent;
+      const totalPLText = document.getElementById("portfolioPLStat").textContent;
+
+      if (!summary) {
+        alert("Run a portfolio scenario first.");
+        return;
+      }
+
+      const item = {
+        id: Date.now(),
+        label: "Portfolio Scenario",
+        shock: shockBps,
+        pnl: totalPLText.includes("-") ? -1 : 1,
+        summary,
+        kind: "portfolio"
+      };
+
+      const items = getSavedScenarios();
+      items.unshift(item);
+      setSavedScenarios(items.slice(0, 18));
+      renderSavedScenarios();
+      alert("Portfolio scenario saved.");
+    }
+
     applyBondPreset();
     runScenario();
+    addBondRow();
     renderSavedScenarios();
   </script>
 </body>
