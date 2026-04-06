@@ -64,7 +64,7 @@
 
     .layout {
       display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
+      grid-template-columns: 1.08fr 0.92fr;
       gap: 18px;
       margin-bottom: 20px;
     }
@@ -104,6 +104,13 @@
       margin-top: 18px;
     }
 
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+
     label {
       display: block;
       font-size: 14px;
@@ -111,7 +118,7 @@
       margin: 2px 0 8px;
     }
 
-    input, button {
+    input, button, select {
       width: 100%;
       padding: 14px 15px;
       border-radius: 12px;
@@ -120,7 +127,7 @@
       box-sizing: border-box;
     }
 
-    input {
+    input, select {
       background: #fff;
       color: #111827;
     }
@@ -155,6 +162,12 @@
 
     .run-btn {
       margin-top: 6px;
+    }
+
+    .secondary-btn {
+      background: rgba(255,255,255,0.08);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.08);
     }
 
     .stat {
@@ -223,6 +236,18 @@
       background: rgba(255,255,255,0.03);
     }
 
+    .use-case {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .use-case-title {
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
     .footer-note {
       color: var(--muted);
       font-size: 13px;
@@ -230,11 +255,24 @@
       margin-top: 18px;
     }
 
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      margin-top: 12px;
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.04);
+      color: white;
+      font-size: 14px;
+      resize: vertical;
+    }
+
     @media (max-width: 980px) {
       .layout {
         grid-template-columns: 1fr;
       }
-      .grid-4 {
+      .grid-4, .grid-3 {
         grid-template-columns: repeat(2, 1fr);
       }
       h1 {
@@ -243,7 +281,7 @@
     }
 
     @media (max-width: 620px) {
-      .grid-2, .grid-4 {
+      .grid-2, .grid-4, .grid-3 {
         grid-template-columns: 1fr;
       }
     }
@@ -253,17 +291,17 @@
   <div class="wrap">
     <h1>Bond Scenario Simulator</h1>
     <p class="sub">
-      Estimate how bond prices react to interest rate shocks using modified duration and convexity. Built for investors, macro watchers, and anyone who wants a cleaner way to think about rate sensitivity.
+      Estimate how bond prices react to interest rate shocks using modified duration and convexity. Built for scenario analysis, risk awareness, and cleaner fixed-income decision support.
     </p>
 
     <div class="notice">
-      This tool is designed for scenario analysis, not portfolio advice. It helps translate rate moves into estimated bond price impact using standard fixed-income approximations.
+      This tool is designed for scenario modeling, not investment advice. It converts rate shocks into estimated bond price sensitivity using standard fixed-income approximations.
     </div>
 
     <div class="layout">
       <div class="card">
-        <div class="section-label">Inputs</div>
-        <h2>Set Your Bond Scenario</h2>
+        <div class="section-label">Scenario Inputs</div>
+        <h2>Configure Your Bond Shock</h2>
 
         <div class="grid-2">
           <div>
@@ -307,7 +345,10 @@
           </div>
         </div>
 
-        <button class="run-btn" onclick="runScenario()">Run Scenario</button>
+        <div class="grid-2" style="margin-top:12px;">
+          <button class="run-btn" onclick="runScenario()">Run Scenario</button>
+          <button class="secondary-btn" onclick="copySummary()">Copy Summary</button>
+        </div>
 
         <div class="small-note">
           Formula used: ΔP/P ≈ -Duration × Δy + 0.5 × Convexity × (Δy²), where Δy is the rate shock in decimal form.
@@ -315,8 +356,8 @@
       </div>
 
       <div class="card">
-        <div class="section-label">Output</div>
-        <h2>Scenario Result</h2>
+        <div class="section-label">Scenario Output</div>
+        <h2>Estimated Result</h2>
 
         <div class="grid-4">
           <div class="stat">
@@ -341,15 +382,32 @@
           Run a scenario to see the estimated bond price response and a plain-English interpretation.
         </div>
 
-        <div class="footer-note">
-          Duration-only approximations are often good first-pass estimates. Convexity helps improve accuracy for larger moves.
+        <textarea id="summaryBox" readonly></textarea>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-label">Quick Use Cases</div>
+      <h2>What This Tool Helps With</h2>
+      <div class="grid-3">
+        <div class="use-case">
+          <div class="use-case-title">Portfolio Stress Testing</div>
+          Estimate how rate shocks affect a bond position before they happen.
+        </div>
+        <div class="use-case">
+          <div class="use-case-title">Macro Scenario Framing</div>
+          Translate hawkish or dovish shocks into expected price sensitivity.
+        </div>
+        <div class="use-case">
+          <div class="use-case-title">Duration Awareness</div>
+          Understand why longer-duration bonds react more sharply to rate moves.
         </div>
       </div>
     </div>
 
     <div class="card compare">
-      <div class="section-label">Reference Scenarios</div>
-      <h2>Quick Shock Comparison</h2>
+      <div class="section-label">Reference Grid</div>
+      <h2>Shock Comparison</h2>
       <table>
         <thead>
           <tr>
@@ -361,6 +419,10 @@
         </thead>
         <tbody id="compareBody"></tbody>
       </table>
+
+      <div class="footer-note">
+        This simulator is intended as a decision-support layer, not a backtesting engine. It helps frame potential bond sensitivity under changing rate environments.
+      </div>
     </div>
   </div>
 
@@ -391,15 +453,14 @@
     }
 
     function scenarioNarrative(shockBps, priceChangePct, newYield) {
-      const direction = shockBps > 0 ? "higher" : shockBps < 0 ? "lower" : "unchanged";
       const bondDirection = priceChangePct > 0 ? "rise" : priceChangePct < 0 ? "fall" : "remain broadly unchanged";
 
       if (shockBps > 0) {
-        return `If yields move ${Math.abs(shockBps)} bps higher, the bond is estimated to ${bondDirection}. The modeled end-yield would be ${newYield.toFixed(2)}%, which implies rate pressure on price-sensitive positions.`;
+        return `If yields move ${Math.abs(shockBps)} bps higher, the bond is estimated to ${bondDirection}. The simulated end-yield would be ${newYield.toFixed(2)}%, implying price pressure on longer-duration exposure.`;
       }
 
       if (shockBps < 0) {
-        return `If yields move ${Math.abs(shockBps)} bps lower, the bond is estimated to ${bondDirection}. The modeled end-yield would be ${newYield.toFixed(2)}%, which implies support for longer-duration exposure.`;
+        return `If yields move ${Math.abs(shockBps)} bps lower, the bond is estimated to ${bondDirection}. The simulated end-yield would be ${newYield.toFixed(2)}%, implying support for rate-sensitive positions.`;
       }
 
       return `With no rate shock applied, the bond is modeled as broadly unchanged. The simulated end-yield remains ${newYield.toFixed(2)}%.`;
@@ -418,10 +479,29 @@
       const newYield = currentYield + shockBps / 100;
 
       return {
+        currentYield,
+        duration,
+        convexity,
+        position,
         priceChangePct,
         pnl,
         newYield
       };
+    }
+
+    function buildSummary(label, shockBps, result, scenarioType) {
+      return [
+        `Scenario: ${label}`,
+        `Current Yield: ${result.currentYield.toFixed(2)}%`,
+        `Rate Shock: ${shockBps > 0 ? "+" : ""}${shockBps} bps`,
+        `Modified Duration: ${result.duration.toFixed(2)}`,
+        `Convexity: ${result.convexity.toFixed(2)}`,
+        `Position Size: $${result.position.toLocaleString()}`,
+        `Estimated Price Change: ${result.priceChangePct.toFixed(2)}%`,
+        `Estimated P/L: ${result.pnl > 0 ? "+" : ""}$${Math.abs(result.pnl).toLocaleString(undefined, { maximumFractionDigits: 0 })}`,
+        `New Yield: ${result.newYield.toFixed(2)}%`,
+        `Scenario Type: ${scenarioType}`
+      ].join("\n");
     }
 
     function renderComparison() {
@@ -446,10 +526,9 @@
 
     function runScenario() {
       const shockBps = Number(document.getElementById("shockInput").value);
-      const currentYield = Number(document.getElementById("yieldInput").value);
       const label = document.getElementById("nameInput").value || "Scenario";
 
-      if (!Number.isFinite(shockBps) || !Number.isFinite(currentYield)) return;
+      if (!Number.isFinite(shockBps)) return;
 
       const result = computeScenario(shockBps);
       const scenarioType = classifyScenario(shockBps);
@@ -462,7 +541,20 @@
       document.getElementById("scenarioText").textContent =
         `${label}: ${scenarioNarrative(shockBps, result.priceChangePct, result.newYield)}`;
 
+      document.getElementById("summaryBox").value =
+        buildSummary(label, shockBps, result, scenarioType);
+
       renderComparison();
+    }
+
+    async function copySummary() {
+      const text = document.getElementById("summaryBox").value;
+      try {
+        await navigator.clipboard.writeText(text);
+        alert("Scenario summary copied.");
+      } catch {
+        alert("Could not copy summary.");
+      }
     }
 
     runScenario();
