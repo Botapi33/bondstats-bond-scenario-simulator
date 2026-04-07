@@ -1280,16 +1280,14 @@ function activatePremiumPreview() {
       document.getElementById("premiumModal").classList.remove("show");
     }
 
-   function refreshPremiumUI() {
-  const premium = false;
-
-  document.getElementById("currentPlanLabel").textContent = "Free";
-  document.getElementById("premiumExportStatus").textContent = "Locked";
-
-  document.getElementById("savedOverlay").classList.add("show");
-  document.getElementById("exportOverlay").classList.add("show");
-  document.getElementById("portfolioOverlay").classList.add("show");
-}
+      function refreshPremiumUI() {
+      const premium = isPremium();
+      document.getElementById("currentPlanLabel").textContent = premium ? "Premium" : "Free";
+      document.getElementById("premiumExportStatus").textContent = premium ? "Premium" : "Free";
+      document.getElementById("savedOverlay").classList.toggle("show", !premium);
+      document.getElementById("exportOverlay").classList.toggle("show", !premium);
+      document.getElementById("portfolioOverlay").classList.toggle("show", !premium);
+    }
 
     function fmtPct(value) {
       const sign = value > 0 ? "+" : "";
