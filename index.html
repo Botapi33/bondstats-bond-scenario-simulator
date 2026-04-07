@@ -2,14 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  />
   <title>Bond Scenario Simulator | BondStats</title>
   <meta
     name="description"
     content="Estimate how bond prices react to interest-rate shocks using duration and convexity. Built for fixed-income scenario analysis."
   />
   <meta name="theme-color" content="#06101d" />
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     :root {
@@ -50,7 +52,7 @@
     html {
       scroll-behavior: smooth;
     }
-    
+
     body {
       margin: 0;
       font-family: var(--font-ui);
@@ -630,21 +632,15 @@
     }
 
     .locked-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(6, 16, 29, 0.55), rgba(6, 16, 29, 0.84));
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  z-index: 5;
-  pointer-events: none;
-}
-
-.locked-overlay.show {
-  display: flex;
-  pointer-events: auto;
-}
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(6, 16, 29, 0.55), rgba(6, 16, 29, 0.84));
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      z-index: 5;
+    }
 
     .locked-overlay.show {
       display: flex;
@@ -680,22 +676,20 @@
       margin-top: 18px;
     }
 
- .modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.65);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  z-index: 50;
-  pointer-events: none;
-}
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 50;
+    }
 
-.modal-backdrop.show {
-  display: flex;
-  pointer-events: auto;
-}
+    .modal-backdrop.show {
+      display: flex;
+    }
 
     .modal {
       width: 100%;
@@ -1292,13 +1286,17 @@
     const SAVED_STORAGE_KEY = "bondstats_saved_scenarios_final";
     const PORTFOLIO_STORAGE_KEY = "bondstats_portfolio_final";
 
-    const SUPABASE_URL = "https://jwjimrfapsnpndgqvvvgv.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp3amltcmZhcHNwbm5kZ3F2dmd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1MjE1MDUsImV4cCI6MjA5MTA5NzUwNX0.CUIoYuVopYKTcDKF2RzaUVWGK1PUNkDCP6l4S6Yixnk";
+    const SUPABASE_URL = "PASTE_YOUR_SUPABASE_URL_HERE";
+    const SUPABASE_ANON_KEY = "PASTE_YOUR_SUPABASE_ANON_KEY_HERE";
 
-     const supabase =
-  window.supabase && typeof window.supabase.createClient === "function"
-    ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
-    : null;
+    const hasSupabaseConfig =
+      SUPABASE_URL !== "PASTE_YOUR_SUPABASE_URL_HERE" &&
+      SUPABASE_ANON_KEY !== "PASTE_YOUR_SUPABASE_ANON_KEY_HERE" &&
+      !!window.supabase;
+
+    const supabase = hasSupabaseConfig
+      ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+      : null;
 
     let currentUser = null;
     let currentProfile = null;
