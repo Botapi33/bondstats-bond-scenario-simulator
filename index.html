@@ -817,7 +817,6 @@
       }
     }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
   <div class="wrap">
@@ -1287,20 +1286,20 @@
     const SAVED_STORAGE_KEY = "bondstats_saved_scenarios_final";
     const PORTFOLIO_STORAGE_KEY = "bondstats_portfolio_final";
 
-    const SUPABASE_URL = "https://jwjimrfapsnpndgqvvvgv.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp3amltcmZhcHNwbm5kZ3F2dmd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1MjE1MDUsImV4cCI6MjA5MTA5NzUwNX0.CUIoYuVopYKTcDKF2RzaUVWGK1PUNkDCP6l4S6Yixnk";
+    const SUPABASE_URL = "PASTE_YOUR_SUPABASE_URL_HERE";
+    const SUPABASE_ANON_KEY = "PASTE_YOUR_SUPABASE_ANON_KEY_HERE";
 
-    const supabase =
-      window.supabase && typeof window.supabase.createClient === "function"
-        ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
-        : null;
+    const hasSupabaseConfig =
+      SUPABASE_URL !== "PASTE_YOUR_SUPABASE_URL_HERE" &&
+      SUPABASE_ANON_KEY !== "PASTE_YOUR_SUPABASE_ANON_KEY_HERE" &&
+      !!window.supabase;
+
+    const supabase = hasSupabaseConfig
+      ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+      : null;
 
     let currentUser = null;
     let currentProfile = null;
-
-    if (!supabase) {
-      console.error("Supabase client not initialized. Check CDN loading.");
-    }
 
     function isPremium() {
       const dbPremium =
@@ -1313,7 +1312,7 @@
 
     async function signUp() {
       if (!supabase) {
-        alert("Supabase konnte nicht geladen werden. Bitte Seite hart neu laden.");
+        alert("Add your Supabase URL and anon key first.");
         return;
       }
 
@@ -1338,7 +1337,7 @@
 
     async function signIn() {
       if (!supabase) {
-        alert("Supabase konnte nicht geladen werden. Bitte Seite hart neu laden.");
+        alert("Add your Supabase URL and anon key first.");
         return;
       }
 
