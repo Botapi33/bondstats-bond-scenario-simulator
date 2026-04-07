@@ -13,6 +13,8 @@
   />
   <meta name="theme-color" content="#06101d" />
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
     :root {
       --bg: #06101d;
@@ -1286,17 +1288,26 @@
     const SAVED_STORAGE_KEY = "bondstats_saved_scenarios_final";
     const PORTFOLIO_STORAGE_KEY = "bondstats_portfolio_final";
 
-    const SUPABASE_URL = "https://<project-id>.supabase.co";
+    const SUPABASE_URL = "https://jwjimrfapsnpndgqvvvgv.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp3amltcmZhcHNwbm5kZ3F2dmd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1MjE1MDUsImV4cCI6MjA5MTA5NzUwNX0.CUIoYuVopYKTcDKF2RzaUVWGK1PUNkDCP6l4S6Yixnk";
 
     const hasSupabaseConfig =
-      SUPABASE_URL !== "https://<project-id>.supabase.co" &&
-      SUPABASE_ANON_KEY !== "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp3amltcmZhcHNwbm5kZ3F2dmd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1MjE1MDUsImV4cCI6MjA5MTA5NzUwNX0.CUIoYuVopYKTcDKF2RzaUVWGK1PUNkDCP6l4S6Yixnk" &&
-      !!window.supabase;
+      typeof SUPABASE_URL === "string" &&
+      SUPABASE_URL.includes(".supabase.co") &&
+      typeof SUPABASE_ANON_KEY === "string" &&
+      SUPABASE_ANON_KEY.length > 20 &&
+      !!window.supabase &&
+      typeof window.supabase.createClient === "function";
 
-    const supabase = hasSupabaseConfig
-      ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
-      : null;
+    let supabase = null;
+    try {
+      if (hasSupabaseConfig) {
+        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      }
+    } catch (err) {
+      console.error("Supabase init failed:", err);
+      supabase = null;
+    }
 
     let currentUser = null;
     let currentProfile = null;
@@ -1312,7 +1323,7 @@
 
     async function signUp() {
       if (!supabase) {
-        alert("Add your Supabase URL and anon key first.");
+        alert("Supabase is not initialized. Reload once and try again.");
         return;
       }
 
@@ -1337,7 +1348,7 @@
 
     async function signIn() {
       if (!supabase) {
-        alert("Add your Supabase URL and anon key first.");
+        alert("Supabase is not initialized. Reload once and try again.");
         return;
       }
 
@@ -2344,7 +2355,10 @@ ${preview}
       await loadUserState();
     }
 
-    initApp();
+    window.addEventListener("DOMContentLoaded", () => {
+      initApp();
+      console.log("BondStats app loaded", { hasSupabaseConfig, supabaseReady: !!supabase });
+    });
   </script>
 </body>
 </html>
