@@ -846,59 +846,6 @@
       </div>
     </div>
 
-
-    <div class="card" id="authCard" style="margin-bottom:18px;">
-      <div class="section-label">Account</div>
-      <h2>Login</h2>
-
-      <div id="authLoggedOut">
-        <div class="grid-2">
-          <div>
-            <label for="authEmail">Email</label>
-            <input id="authEmail" type="email" placeholder="you@example.com" />
-          </div>
-          <div>
-            <label for="authPassword">Password</label>
-            <input id="authPassword" type="password" placeholder="Your password" />
-          </div>
-        </div>
-
-        <div class="toolbar-3">
-          <button onclick="signUp()">Create account</button>
-          <button class="secondary-btn" onclick="signIn()">Log in</button>
-          <button class="outline-btn" onclick="loadUserState()">Refresh session</button>
-        </div>
-
-        <div class="mini-note">
-          Users need an account so Premium can be tied to a real user ID.
-        </div>
-      </div>
-
-      <div id="authLoggedIn" style="display:none;">
-        <div class="metric-card">
-          <div class="metric-label">Signed in as</div>
-          <div class="metric-value" id="userEmailText" style="font-size:22px;">-</div>
-        </div>
-
-        <div class="grid-2" style="margin-top:12px;">
-          <div class="metric-card">
-            <div class="metric-label">Plan</div>
-            <div class="metric-value" id="userPlanText" style="font-size:22px;">Free</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-label">Subscription Status</div>
-            <div class="metric-value" id="userSubStatusText" style="font-size:22px;">Inactive</div>
-          </div>
-        </div>
-
-        <div class="toolbar-3">
-          <button class="secondary-btn" onclick="openPremiumModal()">Upgrade</button>
-          <button class="outline-btn" onclick="loadUserState()">Refresh</button>
-          <button class="danger-btn" onclick="signOutUser()">Log out</button>
-        </div>
-      </div>
-    </div>
-
     <div class="top-kpis">
       <div class="kpi">
         <div class="kpi-label">Use Case</div>
@@ -1282,173 +1229,17 @@
   </div>
 
   <script>
-    const PREMIUM_PREVIEW_STORAGE_KEY = "bondstats_scenario_premium_preview";
+    const PREMIUM_STORAGE_KEY = "bondstats_scenario_premium";
     const SAVED_STORAGE_KEY = "bondstats_saved_scenarios_final";
     const PORTFOLIO_STORAGE_KEY = "bondstats_portfolio_final";
 
-    const SUPABASE_URL = "https://jwjimrfapsnpndgqvvvgv.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp3amltcmZhcHNwbm5kZ3F2dmd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1MjE1MDUsImV4cCI6MjA5MTA5NzUwNX0.CUIoYuVopYKTcDKF2RzaUVWGK1PUNkDCP6l4S6Yixnk";
-
-    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp3amltcmZhcHNwbm5kZ3F2dmd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1MjE1MDUsImV4cCI6MjA5MTA5NzUwNX0.CUIoYuVopYKTcDKF2RzaUVWGK1PUNkDCP6l4S6Yixnk
-
-    let currentUser = null;
-    let currentProfile = null;
-
     function isPremium() {
-      const dbPremium =
-        currentProfile?.plan === "premium" &&
-        (currentProfile?.subscription_status === "active" ||
-          currentProfile?.subscription_status === "trialing");
-      const previewPremium = localStorage.getItem(PREMIUM_PREVIEW_STORAGE_KEY) === "1";
-      return dbPremium || previewPremium;
-    }
-
-  
-
-      const email = document.getElementById("authEmail").value.trim();
-      const password = document.getElementById("authPassword").value;
-
-      if (!email || !password) {
-        alert("Please enter email and password.");
-        return;
-      }
-
-      const { error } = await supabase.auth.signUp({ email, password });
-
-      if (error) {
-        alert(error.message);
-        return;
-      }
-
-      alert("Account created. Check your email if confirmation is enabled.");
-      await loadUserState();
-    }
-
-    async function signIn() {
-      if (!supabase) {
-        alert("Add your Supabase URL and anon key first.");
-        return;
-      }
-
-      const email = document.getElementById("authEmail").value.trim();
-      const password = document.getElementById("authPassword").value;
-
-      if (!email || !password) {
-        alert("Please enter email and password.");
-        return;
-      }
-
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
-
-      if (error) {
-        alert(error.message);
-        return;
-      }
-
-      await loadUserState();
-    }
-
-    async function signOutUser() {
-      if (!supabase) {
-        currentUser = null;
-        currentProfile = null;
-        renderAuthUI();
-        refreshPremiumUI();
-        return;
-      }
-
-      const { error } = await supabase.auth.signOut();
-
-      if (error) {
-        alert(error.message);
-        return;
-      }
-
-      currentUser = null;
-      currentProfile = null;
-      renderAuthUI();
-      refreshPremiumUI();
-    }
-
-    async function fetchProfile(userId) {
-      if (!supabase) return null;
-
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("id, email, plan, subscription_status, stripe_customer_id, stripe_subscription_id, current_period_end")
-        .eq("id", userId)
-        .single();
-
-      if (error) {
-        console.error("Profile load error:", error.message);
-        return null;
-      }
-
-      return data;
-    }
-
-    async function loadUserState() {
-      if (!supabase) {
-        currentUser = null;
-        currentProfile = null;
-        renderAuthUI();
-        refreshPremiumUI();
-        return;
-      }
-
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-
-      currentUser = session?.user ?? null;
-      currentProfile = null;
-
-      if (currentUser) {
-        currentProfile = await fetchProfile(currentUser.id);
-      }
-
-      renderAuthUI();
-      refreshPremiumUI();
-    }
-
-    function renderAuthUI() {
-      const loggedOut = document.getElementById("authLoggedOut");
-      const loggedIn = document.getElementById("authLoggedIn");
-
-      if (!loggedOut || !loggedIn) return;
-
-      if (!currentUser) {
-        loggedOut.style.display = "block";
-        loggedIn.style.display = "none";
-        document.getElementById("userEmailText").textContent = "-";
-        document.getElementById("userPlanText").textContent = isPremium() ? "Premium Preview" : "Free";
-        document.getElementById("userSubStatusText").textContent = isPremium() ? "preview" : "inactive";
-        return;
-      }
-
-      loggedOut.style.display = "none";
-      loggedIn.style.display = "block";
-
-      document.getElementById("userEmailText").textContent =
-        currentUser.email || currentProfile?.email || "-";
-
-      document.getElementById("userPlanText").textContent =
-        currentProfile?.plan === "premium" ? "Premium" : "Free";
-
-      document.getElementById("userSubStatusText").textContent =
-        currentProfile?.subscription_status || "inactive";
-    }
-
-    if (supabase) {
-      supabase.auth.onAuthStateChange(async () => {
-        await loadUserState();
-      });
+      return localStorage.getItem(PREMIUM_STORAGE_KEY) === "1";
     }
 
     function activatePremiumPreview() {
-      localStorage.setItem(PREMIUM_PREVIEW_STORAGE_KEY, "1");
+      localStorage.setItem(PREMIUM_STORAGE_KEY, "1");
       closePremiumModal();
-      renderAuthUI();
       refreshPremiumUI();
       renderSavedScenarios();
       renderPortfolio();
@@ -1456,12 +1247,11 @@
     }
 
     function togglePremiumPreview() {
-      if (localStorage.getItem(PREMIUM_PREVIEW_STORAGE_KEY) === "1") {
-        localStorage.removeItem(PREMIUM_PREVIEW_STORAGE_KEY);
+      if (isPremium()) {
+        localStorage.removeItem(PREMIUM_STORAGE_KEY);
       } else {
-        localStorage.setItem(PREMIUM_PREVIEW_STORAGE_KEY, "1");
+        localStorage.setItem(PREMIUM_STORAGE_KEY, "1");
       }
-      renderAuthUI();
       refreshPremiumUI();
       renderSavedScenarios();
       renderPortfolio();
@@ -2325,15 +2115,11 @@ ${preview}
         .catch(() => alert("Could not copy."));
     }
 
-    async function initApp() {
-      applyBondPreset();
-      runScenario();
-      renderSavedScenarios();
-      renderPortfolio();
-      await loadUserState();
-    }
-
-    initApp();
+    applyBondPreset();
+    runScenario();
+    renderSavedScenarios();
+    renderPortfolio();
+    refreshPremiumUI();
   </script>
 </body>
 </html>
