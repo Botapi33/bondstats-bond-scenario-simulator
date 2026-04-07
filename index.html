@@ -12,6 +12,7 @@
     content="Estimate how bond prices react to interest-rate shocks using duration and convexity. Built for fixed-income scenario analysis."
   />
   <meta name="theme-color" content="#06101d" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     :root {
@@ -1286,13 +1287,16 @@
     const SAVED_STORAGE_KEY = "bondstats_saved_scenarios_final";
     const PORTFOLIO_STORAGE_KEY = "bondstats_portfolio_final";
 
-    const SUPABASE_URL = "PASTE_YOUR_SUPABASE_URL_HERE";
-    const SUPABASE_ANON_KEY = "PASTE_YOUR_SUPABASE_ANON_KEY_HERE";
+    const SUPABASE_URL = "https://jwjimrfapsnpndgqvvvgv.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp3amltcmZhcHNwbm5kZ3F2dmd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1MjE1MDUsImV4cCI6MjA5MTA5NzUwNX0.CUIoYuVopYKTcDKF2RzaUVWGK1PUNkDCP6l4S6Yixnk";
 
     const hasSupabaseConfig =
-      SUPABASE_URL !== "PASTE_YOUR_SUPABASE_URL_HERE" &&
-      SUPABASE_ANON_KEY !== "PASTE_YOUR_SUPABASE_ANON_KEY_HERE" &&
-      !!window.supabase;
+      typeof SUPABASE_URL === "string" &&
+      SUPABASE_URL.includes(".supabase.co") &&
+      typeof SUPABASE_ANON_KEY === "string" &&
+      SUPABASE_ANON_KEY.length > 20 &&
+      !!window.supabase &&
+      typeof window.supabase.createClient === "function";
 
     const supabase = hasSupabaseConfig
       ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
@@ -1312,7 +1316,7 @@
 
     async function signUp() {
       if (!supabase) {
-        alert("Add your Supabase URL and anon key first.");
+        alert("Supabase is not initialized yet. Check the .supabase.co URL, the anon public key, and that the CDN script is present.");
         return;
       }
 
@@ -1337,7 +1341,7 @@
 
     async function signIn() {
       if (!supabase) {
-        alert("Add your Supabase URL and anon key first.");
+        alert("Supabase is not initialized yet. Check the .supabase.co URL, the anon public key, and that the CDN script is present.");
         return;
       }
 
