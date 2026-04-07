@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bond Scenario Simulator | BondStats</title>
   <meta charset="UTF-8" />
   <meta
     name="viewport"
@@ -13,7 +15,6 @@
     content="Estimate how bond prices react to interest-rate shocks using duration and convexity. Built for fixed-income scenario analysis."
   />
   <meta name="theme-color" content="#06101d" />
-
   <style>
     :root {
       --bg: #06101d;
@@ -45,15 +46,12 @@
       --max-width: 1440px;
       --font-ui: Arial, Helvetica, sans-serif;
     }
-
     * {
       box-sizing: border-box;
     }
-
     html {
       scroll-behavior: smooth;
     }
-
     body {
       margin: 0;
       font-family: var(--font-ui);
@@ -65,21 +63,17 @@
       padding: 24px 16px 64px;
       min-height: 100vh;
     }
-
     a {
       color: inherit;
       text-decoration: none;
     }
-
     .wrap {
       max-width: var(--max-width);
       margin: 0 auto;
     }
-
     .hero {
       margin-bottom: 22px;
     }
-
     .eyebrow {
       display: inline-flex;
       align-items: center;
@@ -94,28 +88,24 @@
       letter-spacing: 0.04em;
       text-transform: uppercase;
     }
-
     h1 {
       margin: 14px 0 10px;
       font-size: 62px;
       line-height: 0.95;
       letter-spacing: -0.05em;
     }
-
     h2 {
       margin: 0 0 14px;
       font-size: 30px;
       line-height: 1.08;
       letter-spacing: -0.02em;
     }
-
     h3 {
       margin: 0 0 10px;
       font-size: 20px;
       line-height: 1.2;
       letter-spacing: -0.015em;
     }
-
     .sub {
       margin: 0;
       max-width: 980px;
@@ -123,7 +113,6 @@
       font-size: 18px;
       line-height: 1.7;
     }
-
     .notice {
       margin-top: 18px;
       background: rgba(59, 130, 246, 0.1);
@@ -133,7 +122,6 @@
       border-radius: 14px;
       line-height: 1.55;
     }
-
     .premium-bar {
       margin-top: 18px;
       display: flex;
@@ -145,18 +133,15 @@
       background: linear-gradient(90deg, rgba(139, 92, 246, 0.14), rgba(59, 130, 246, 0.12));
       border: 1px solid rgba(139, 92, 246, 0.25);
     }
-
     .premium-bar-title {
       font-weight: 700;
       margin-bottom: 4px;
     }
-
     .premium-bar-text {
       color: #ddd6fe;
       font-size: 14px;
       line-height: 1.5;
     }
-
     .top-kpis {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -164,7 +149,6 @@
       margin-top: 22px;
       margin-bottom: 20px;
     }
-
     .kpi {
       background: linear-gradient(180deg, rgba(12, 20, 34, 0.98), rgba(14, 24, 39, 0.98));
       border: 1px solid var(--border);
@@ -172,41 +156,35 @@
       box-shadow: var(--shadow-md);
       padding: 18px;
     }
-
     .kpi-label {
       color: var(--muted);
       font-size: 13px;
       margin-bottom: 8px;
     }
-
     .kpi-value {
       font-size: 30px;
       font-weight: 700;
       line-height: 1.05;
       letter-spacing: -0.02em;
     }
-
     .layout {
       display: grid;
       grid-template-columns: 1.08fr 0.92fr;
       gap: 18px;
       margin-bottom: 18px;
     }
-
     .mid-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 18px;
       margin-top: 18px;
     }
-
     .export-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 18px;
       margin-top: 18px;
     }
-
     .card {
       position: relative;
       background: linear-gradient(180deg, var(--panel), var(--panel-2));
@@ -216,7 +194,6 @@
       padding: 22px;
       overflow: hidden;
     }
-
     .section-label {
       color: var(--muted);
       font-size: 12px;
@@ -225,53 +202,45 @@
       margin-bottom: 10px;
       font-weight: 700;
     }
-
     .grid-2 {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
     }
-
     .grid-3 {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 12px;
     }
-
     .grid-4 {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 14px;
     }
-
     .toolbar {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 12px;
       margin-top: 14px;
     }
-
     .toolbar-3 {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 12px;
       margin-top: 14px;
     }
-
     .toolbar-2 {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
       margin-top: 14px;
     }
-
     label {
       display: block;
       color: var(--muted);
       font-size: 14px;
       margin-bottom: 8px;
     }
-
     input,
     select,
     button,
@@ -284,20 +253,17 @@
       box-sizing: border-box;
       font-family: inherit;
     }
-
     input,
     select {
       background: #ffffff;
       color: #111827;
     }
-
     textarea {
       background: rgba(255, 255, 255, 0.04);
       color: white;
       min-height: 120px;
       resize: vertical;
     }
-
     button {
       cursor: pointer;
       font-weight: 700;
@@ -306,47 +272,39 @@
       background: linear-gradient(90deg, var(--blue), var(--blue-2));
       transition: 160ms ease;
     }
-
     button:hover {
       transform: translateY(-1px);
       filter: brightness(1.04);
     }
-
     .secondary-btn {
       background: rgba(255, 255, 255, 0.07);
       border: 1px solid rgba(255, 255, 255, 0.08);
       color: white;
     }
-
     .success-btn {
       background: linear-gradient(90deg, var(--green), var(--green-2));
       color: white;
     }
-
     .danger-btn {
       background: rgba(239, 68, 68, 0.14);
       border: 1px solid rgba(239, 68, 68, 0.2);
       color: #fecaca;
     }
-
     .outline-btn {
       background: transparent;
       border: 1px solid rgba(255, 255, 255, 0.14);
       color: white;
     }
-
     .premium-btn {
       background: linear-gradient(90deg, var(--purple), var(--purple-2));
       color: white;
     }
-
     .preset-row {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       margin: 6px 0 18px;
     }
-
     .preset-btn {
       width: auto;
       min-width: 90px;
@@ -358,39 +316,32 @@
       font-size: 14px;
       font-weight: 700;
     }
-
     .metric-card {
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(255, 255, 255, 0.06);
       border-radius: 18px;
       padding: 18px;
     }
-
     .metric-label {
       color: var(--muted);
       font-size: 13px;
       margin-bottom: 8px;
     }
-
     .metric-value {
       font-size: 31px;
       font-weight: 700;
       line-height: 1.05;
       letter-spacing: -0.02em;
     }
-
     .positive {
       color: #4ade80;
     }
-
     .negative {
       color: #f87171;
     }
-
     .neutral {
       color: #e5e7eb;
     }
-
     .scenario-box {
       margin-top: 18px;
       background: rgba(255, 255, 255, 0.04);
@@ -400,7 +351,6 @@
       line-height: 1.7;
       color: #dbe3f0;
     }
-
     .score-pill {
       display: inline-block;
       padding: 6px 10px;
@@ -409,32 +359,27 @@
       font-weight: 700;
       margin-left: 8px;
     }
-
     .score-low {
       background: rgba(34, 197, 94, 0.14);
       color: #86efac;
       border: 1px solid rgba(34, 197, 94, 0.25);
     }
-
     .score-medium {
       background: rgba(245, 158, 11, 0.12);
       color: #fde68a;
       border: 1px solid rgba(245, 158, 11, 0.24);
     }
-
     .score-high {
       background: rgba(239, 68, 68, 0.12);
       color: #fca5a5;
       border: 1px solid rgba(239, 68, 68, 0.22);
     }
-
     .mini-note {
       color: var(--muted);
       font-size: 13px;
       line-height: 1.65;
       margin-top: 14px;
     }
-
     .chart-wrap {
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(255, 255, 255, 0.06);
@@ -442,7 +387,6 @@
       padding: 14px;
       margin-top: 18px;
     }
-
     canvas {
       width: 100%;
       height: 320px;
@@ -450,7 +394,6 @@
       border-radius: 14px;
       background: rgba(255, 255, 255, 0.02);
     }
-
     table {
       width: 100%;
       border-collapse: collapse;
@@ -459,7 +402,6 @@
       border-radius: 14px;
       overflow: hidden;
     }
-
     th,
     td {
       padding: 13px 14px;
@@ -467,58 +409,48 @@
       border-bottom: 1px solid rgba(255, 255, 255, 0.06);
       font-size: 14px;
     }
-
     th {
       color: var(--muted);
       background: rgba(255, 255, 255, 0.03);
       font-size: 13px;
     }
-
     .compare-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 14px;
       margin-top: 14px;
     }
-
     .scenario-mini {
       border-radius: 18px;
       padding: 18px;
       border: 1px solid rgba(255, 255, 255, 0.08);
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.025));
     }
-
     .scenario-mini.base {
       border-color: rgba(59, 130, 246, 0.2);
     }
-
     .scenario-mini.hawkish {
       border-color: rgba(239, 68, 68, 0.2);
     }
-
     .scenario-mini.dovish {
       border-color: rgba(34, 197, 94, 0.2);
     }
-
     .scenario-mini-title {
       font-size: 18px;
       font-weight: 700;
       margin-bottom: 10px;
     }
-
     .scenario-mini-meta {
       color: var(--muted);
       line-height: 1.6;
       font-size: 14px;
     }
-
     .saved-list,
     .portfolio-list {
       margin-top: 12px;
       display: grid;
       gap: 10px;
     }
-
     .saved-item,
     .portfolio-item {
       background: rgba(255, 255, 255, 0.04);
@@ -530,41 +462,35 @@
       align-items: center;
       gap: 12px;
     }
-
     .saved-meta,
     .portfolio-meta {
       color: var(--muted);
       font-size: 13px;
       line-height: 1.5;
     }
-
     .saved-actions {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
     }
-
     .small-btn {
       width: auto;
       min-width: 84px;
       padding: 10px 12px;
       border-radius: 12px;
     }
-
     .portfolio-inline {
       display: grid;
       grid-template-columns: 1.2fr 1fr 1fr 1fr 1.1fr auto;
       gap: 10px;
       align-items: end;
     }
-
     .export-card {
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
       border: 1px solid rgba(255, 255, 255, 0.07);
       border-radius: 18px;
       padding: 20px;
     }
-
     .report-preview {
       background: white;
       color: #111827;
@@ -572,33 +498,28 @@
       padding: 22px;
       margin-top: 14px;
     }
-
     .report-title {
       font-size: 26px;
       font-weight: 700;
       margin-bottom: 8px;
     }
-
     .report-sub {
       color: #475569;
       margin-bottom: 20px;
       line-height: 1.6;
     }
-
     .report-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
       margin-bottom: 18px;
     }
-
     .report-metric {
       background: #f8fafc;
       border: 1px solid #e2e8f0;
       border-radius: 14px;
       padding: 14px;
     }
-
     .report-metric-label {
       color: #64748b;
       font-size: 12px;
@@ -606,12 +527,10 @@
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
-
     .report-metric-value {
       font-size: 24px;
       font-weight: 700;
     }
-
     .report-box {
       border: 1px solid #e2e8f0;
       border-radius: 14px;
@@ -619,7 +538,6 @@
       line-height: 1.6;
       margin-bottom: 14px;
     }
-
     .premium-tag {
       display: inline-block;
       padding: 6px 10px;
@@ -631,7 +549,6 @@
       color: #ddd6fe;
       margin-left: 8px;
     }
-
     .locked-overlay {
       position: absolute;
       inset: 0;
@@ -642,11 +559,9 @@
       padding: 24px;
       z-index: 5;
     }
-
     .locked-overlay.show {
       display: flex;
     }
-
     .locked-box {
       max-width: 520px;
       width: 100%;
@@ -657,26 +572,22 @@
       padding: 26px;
       box-shadow: 0 18px 44px rgba(0, 0, 0, 0.32);
     }
-
     .locked-title {
       font-size: 24px;
       font-weight: 700;
       margin-bottom: 10px;
     }
-
     .locked-text {
       color: var(--muted);
       line-height: 1.6;
       margin-bottom: 18px;
     }
-
     .footer-note {
       color: var(--muted);
       font-size: 13px;
       line-height: 1.7;
       margin-top: 18px;
     }
-
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -687,11 +598,9 @@
       padding: 20px;
       z-index: 50;
     }
-
     .modal-backdrop.show {
       display: flex;
     }
-
     .modal {
       width: 100%;
       max-width: 760px;
@@ -701,94 +610,78 @@
       padding: 24px;
       box-shadow: 0 18px 44px rgba(0, 0, 0, 0.32);
     }
-
     .modal-title {
       font-size: 30px;
       font-weight: 700;
       margin-bottom: 8px;
     }
-
     .modal-sub {
       color: var(--muted);
       line-height: 1.6;
       margin-bottom: 18px;
     }
-
     .plans {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 14px;
     }
-
     .plan {
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 18px;
       padding: 18px;
       background: rgba(255, 255, 255, 0.03);
     }
-
     .plan.featured {
       border-color: rgba(139, 92, 246, 0.28);
       background: linear-gradient(180deg, rgba(139, 92, 246, 0.08), rgba(59, 130, 246, 0.04));
     }
-
     .plan-title {
       font-size: 20px;
       font-weight: 700;
       margin-bottom: 4px;
     }
-
     .plan-price {
       font-size: 30px;
       font-weight: 700;
       margin-bottom: 12px;
     }
-
     .plan ul {
       margin: 0 0 16px 18px;
       color: var(--muted);
       line-height: 1.7;
       padding: 0;
     }
-
     @media (max-width: 1100px) {
       .top-kpis,
       .grid-4,
       .compare-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
-
       .layout,
       .mid-grid,
       .export-grid {
         grid-template-columns: 1fr;
       }
-
       h1 {
         font-size: 48px;
       }
-
       .toolbar,
       .toolbar-3,
       .toolbar-2 {
         grid-template-columns: 1fr 1fr;
       }
-
       .premium-bar {
         flex-direction: column;
         align-items: flex-start;
       }
-
       .portfolio-inline {
         grid-template-columns: 1fr 1fr;
       }
     }
-
     @media (max-width: 720px) {
       body {
         padding: 18px 12px 48px;
       }
-
       .grid-2,
       .grid-3,
       .grid-4,
@@ -802,17 +695,14 @@
       .portfolio-inline {
         grid-template-columns: 1fr;
       }
-
       .saved-item,
       .portfolio-item {
         flex-direction: column;
         align-items: flex-start;
       }
-
       h1 {
         font-size: 38px;
       }
-
       h2 {
         font-size: 24px;
       }
@@ -820,24 +710,22 @@
   </style>
 </head>
 <body>
-  ="wrap">
-
-    ="hero">
-      ="eyebrow">BondStats Product</div>
+  <div class="wrap">
+    <div class="hero">
+      <div class="eyebrow">BondStats Product</div>
       <h1>Bond Scenario Simulator</h1>
       <p class="sub">
         Model bond price sensitivity under rate shocks with a professional scenario workflow. Built for fixed-income analysis, macro framing, and cleaner portfolio decision support.
       </p>
-      ="notice">
+      <div class="notice">
         This tool estimates bond sensitivity using modified duration and convexity. It is designed for scenario analysis and risk framing, not investment advice.
       </div>
-
-      ="premium-bar">
+      <div class="premium-bar">
         <div>
-          ="premium-bar-title">
+          <div class="premium-bar-title">
             Free includes the full single-bond scenario workflow. Premium unlocks saved scenarios, export mode, and portfolio analysis.
           </div>
-          ="premium-bar-text">
+          <div class="premium-bar-text">
             This creates a clean product split: useful for free, professional workflow upgrades in Premium.
           </div>
         </div>
@@ -846,57 +734,6 @@
         </div>
       </div>
     </div>
-<div class="card" id="authCard">
-  <div class="section-label">Account</div>
-  <h2>Login</h2>
-
-  <div id="authLoggedOut">
-    <div class="grid-2">
-      <div>
-        <label for="authEmail">Email</label>
-        <input id="authEmail" type="email" placeholder="you@example.com" />
-      </div>
-      <div>
-        <label for="authPassword">Password</label>
-        <input id="authPassword" type="password" placeholder="Your password" />
-      </div>
-    </div>
-
-    <div class="toolbar-3">
-      <button onclick="signUp()">Create account</button>
-      <button class="secondary-btn" onclick="signIn()">Log in</button>
-      <button class="outline-btn" onclick="loadUserState()">Refresh session</button>
-    </div>
-
-    <div class="mini-note">
-      Users need an account so Premium can be tied to a real user ID.
-    </div>
-  </div>
-
-  <div id="authLoggedIn" style="display:none;">
-    <div class="metric-card">
-      <div class="metric-label">Signed in as</div>
-      <div class="metric-value" id="userEmailText" style="font-size:22px;">-</div>
-    </div>
-
-    <div class="grid-2" style="margin-top:12px;">
-      <div class="metric-card">
-        <div class="metric-label">Plan</div>
-        <div class="metric-value" id="userPlanText" style="font-size:22px;">Free</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-label">Subscription Status</div>
-        <div class="metric-value" id="userSubStatusText" style="font-size:22px;">Inactive</div>
-      </div>
-    </div>
-
-    <div class="toolbar-3">
-      <button class="secondary-btn" onclick="openPremiumModal()">Upgrade</button>
-      <button class="outline-btn" onclick="signOutUser()">Log out</button>
-      <button class="outline-btn" onclick="loadUserState()">Refresh</button>
-    </div>
-  </div>
-</div>
     <div class="top-kpis">
       <div class="kpi">
         <div class="kpi-label">Use Case</div>
@@ -915,12 +752,10 @@
         <div class="kpi-value" id="currentPlanLabel">Free</div>
       </div>
     </div>
-
     <div class="layout">
       <div class="card">
         <div class="section-label">Scenario Setup</div>
         <h2>Configure Your Bond Shock</h2>
-
         <div class="grid-2">
           <div>
             <label for="yieldInput">Current Yield (%)</label>
@@ -931,7 +766,6 @@
             <input id="shockInput" type="number" step="1" value="100" />
           </div>
         </div>
-
         <div class="preset-row">
           <button class="preset-btn" onclick="setShock(-100)">-100 bps</button>
           <button class="preset-btn" onclick="setShock(-50)">-50 bps</button>
@@ -940,7 +774,6 @@
           <button class="preset-btn" onclick="setShock(50)">+50 bps</button>
           <button class="preset-btn" onclick="setShock(100)">+100 bps</button>
         </div>
-
         <div class="grid-3">
           <div>
             <label for="bondPreset">Bond Preset</label>
@@ -952,30 +785,25 @@
               <option value="long">30Y Treasury-like</option>
             </select>
           </div>
-
           <div>
             <label for="durationInput">Modified Duration</label>
             <input id="durationInput" type="number" step="0.01" value="7.50" />
           </div>
-
           <div>
             <label for="convexityInput">Convexity</label>
             <input id="convexityInput" type="number" step="0.01" value="0.80" />
           </div>
         </div>
-
         <div class="grid-2" style="margin-top:12px;">
           <div>
             <label for="positionInput">Position Size ($)</label>
             <input id="positionInput" type="number" step="1000" value="100000" />
           </div>
-
           <div>
             <label for="nameInput">Scenario Label</label>
             <input id="nameInput" type="text" value="Base Scenario" />
           </div>
         </div>
-
         <div class="grid-2" style="margin-top:12px;">
           <div>
             <label for="macroPreset">Macro Scenario Preset</label>
@@ -988,94 +816,77 @@
               <option value="inflation_shock">Inflation Shock</option>
             </select>
           </div>
-
           <div>
             <label for="scenarioNotesInput">Notes</label>
             <input id="scenarioNotesInput" type="text" value="Base rates scenario" />
           </div>
         </div>
-
         <div class="toolbar">
           <button onclick="runScenario()">Run Scenario</button>
           <button class="secondary-btn" onclick="copySummary()">Copy Summary</button>
           <button class="secondary-btn" onclick="saveScenarioGuarded()">Save Scenario</button>
           <button class="secondary-btn" onclick="updateExportPreview()">Refresh Export</button>
         </div>
-
         <div class="mini-note">
           Formula used: ΔP/P ≈ -Duration × Δy + 0.5 × Convexity × (Δy²), where Δy is the rate shock in decimal form.
         </div>
-
         <div class="chart-wrap">
           <div class="section-label" style="margin-bottom:8px;">Sensitivity Curve</div>
           <canvas id="shockChart" width="920" height="320"></canvas>
         </div>
       </div>
-
       <div class="card">
         <div class="section-label">Scenario Result</div>
         <h2>Estimated Impact</h2>
-
         <div class="grid-4">
           <div class="metric-card">
             <div class="metric-label">Price Change</div>
             <div class="metric-value" id="priceChangeStat">-</div>
           </div>
-
           <div class="metric-card">
             <div class="metric-label">Estimated P/L</div>
             <div class="metric-value" id="plStat">-</div>
           </div>
-
           <div class="metric-card">
             <div class="metric-label">New Yield</div>
             <div class="metric-value" id="newYieldStat">-</div>
           </div>
-
           <div class="metric-card">
             <div class="metric-label">DV01</div>
             <div class="metric-value" id="dv01Stat">-</div>
           </div>
         </div>
-
         <div class="grid-2" style="margin-top:14px;">
           <div class="metric-card">
             <div class="metric-label">Scenario Type</div>
             <div class="metric-value" id="scenarioTypeStat">-</div>
           </div>
-
           <div class="metric-card">
             <div class="metric-label">Stress Score</div>
             <div class="metric-value" id="stressScoreStat">-</div>
           </div>
         </div>
-
         <div class="grid-2" style="margin-top:14px;">
           <div class="metric-card">
             <div class="metric-label">Current Yield</div>
             <div class="metric-value" id="currentYieldStat">-</div>
           </div>
-
           <div class="metric-card">
             <div class="metric-label">Position</div>
             <div class="metric-value" id="positionStat">-</div>
           </div>
         </div>
-
         <div class="scenario-box" id="scenarioText">
           Run a scenario to see the estimated bond response and a plain-English interpretation.
         </div>
-
         <textarea id="summaryBox" readonly></textarea>
       </div>
     </div>
-
     <div class="card">
       <div class="section-label">Scenario Compare</div>
       <h2>Base vs Hawkish vs Dovish</h2>
       <div class="compare-grid" id="scenarioCompareGrid"></div>
     </div>
-
     <div class="mid-grid">
       <div class="card">
         <div class="section-label">Shock Reference Grid</div>
@@ -1092,11 +903,9 @@
           <tbody id="compareBody"></tbody>
         </table>
       </div>
-
       <div class="card">
         <div class="section-label">Saved Scenarios <span class="premium-tag">Premium</span></div>
         <h2>Scenario Library</h2>
-
         <div class="locked-overlay" id="savedOverlay">
           <div class="locked-box">
             <div class="locked-title">Premium Feature</div>
@@ -1109,17 +918,14 @@
             </div>
           </div>
         </div>
-
         <div id="savedList" class="saved-list">
           <div class="saved-meta">No saved scenarios yet.</div>
         </div>
       </div>
     </div>
-
     <div class="card" style="margin-top:18px;">
       <div class="section-label">Export Mode <span class="premium-tag">Premium</span></div>
       <h2>Professional Report Export</h2>
-
       <div class="locked-overlay" id="exportOverlay">
         <div class="locked-box">
           <div class="locked-title">Premium Feature</div>
@@ -1132,25 +938,20 @@
           </div>
         </div>
       </div>
-
       <div class="export-grid">
         <div class="export-card">
           <h3>Export Actions</h3>
-
           <div class="toolbar">
             <button onclick="printReportGuarded()">Print / Save PDF</button>
             <button class="secondary-btn" onclick="downloadReportHTMLGuarded()">Download HTML Report</button>
             <button class="secondary-btn" onclick="copyExportTextGuarded()">Copy Report Text</button>
             <button class="success-btn" onclick="exportPNGGuarded()">Export PNG</button>
           </div>
-
           <div class="mini-note">
             Export Mode turns your scenario output into a shareable artifact for memos, presentations, and workflow documentation.
           </div>
-
           <textarea id="exportTextBox" readonly></textarea>
         </div>
-
         <div class="export-card">
           <h3>Report Preview</h3>
           <div id="reportPreview" class="report-preview">
@@ -1160,11 +961,9 @@
         </div>
       </div>
     </div>
-
     <div class="card" style="margin-top:18px;">
       <div class="section-label">Portfolio Mode <span class="premium-tag">Premium</span></div>
       <h2>Portfolio-Level Rate Sensitivity</h2>
-
       <div class="locked-overlay" id="portfolioOverlay">
         <div class="locked-box">
           <div class="locked-title">Premium Feature</div>
@@ -1177,46 +976,37 @@
           </div>
         </div>
       </div>
-
       <div class="grid-4">
         <div class="metric-card">
           <div class="metric-label">Positions</div>
           <div class="metric-value" id="portfolioCountStat">0</div>
         </div>
-
         <div class="metric-card">
           <div class="metric-label">Portfolio P/L</div>
           <div class="metric-value" id="portfolioPLStat">-</div>
         </div>
-
         <div class="metric-card">
           <div class="metric-label">Portfolio DV01</div>
           <div class="metric-value" id="portfolioDV01Stat">-</div>
         </div>
-
         <div class="metric-card">
           <div class="metric-label">Avg Duration</div>
           <div class="metric-value" id="portfolioDurationStat">-</div>
         </div>
       </div>
-
       <div class="toolbar-3" style="margin-top:16px;">
         <button onclick="addPortfolioBondGuarded()">Add Bond</button>
         <button class="secondary-btn" onclick="runPortfolioScenarioGuarded()">Run Portfolio</button>
         <button class="danger-btn" onclick="resetPortfolioGuarded()">Reset Portfolio</button>
       </div>
-
       <div id="portfolioList" class="portfolio-list">
         <div class="saved-meta">Portfolio mode is available in Premium.</div>
       </div>
-
       <textarea id="portfolioSummaryBox" readonly style="margin-top:14px;"></textarea>
     </div>
-
     <div class="card" style="margin-top:18px;">
       <div class="section-label">Pricing</div>
       <h2>Free vs Premium</h2>
-
       <div class="grid-2">
         <div class="metric-card">
           <div class="metric-label">Free</div>
@@ -1226,7 +1016,6 @@
             • Sensitivity curve
           </div>
         </div>
-
         <div class="metric-card">
           <div class="metric-label">Premium</div>
           <div class="neutral" style="line-height:1.8;">
@@ -1236,23 +1025,19 @@
           </div>
         </div>
       </div>
-
       <div class="toolbar-3">
         <button class="premium-btn" onclick="openPremiumModal()">Upgrade to Premium</button>
         <button class="secondary-btn" onclick="copyLaunchText()">Copy Launch Text</button>
         <button class="secondary-btn" onclick="togglePremiumPreview()">Toggle Premium Preview</button>
       </div>
     </div>
-
   </div>
-
   <div class="modal-backdrop" id="premiumModal">
     <div class="modal">
       <div class="modal-title">Upgrade to Premium</div>
       <div class="modal-sub">
         Premium is positioned for professional workflows: save scenarios, export clean reports, and run portfolio-level bond shock analysis.
       </div>
-
       <div class="plans">
         <div class="plan">
           <div class="plan-title">Free</div>
@@ -1264,7 +1049,6 @@
           </ul>
           <button class="secondary-btn" onclick="closePremiumModal()">Stay on Free</button>
         </div>
-
         <div class="plan featured">
           <div class="plan-title">Premium</div>
           <div class="plan-price">$12/mo</div>
@@ -1278,145 +1062,13 @@
       </div>
     </div>
   </div>
-
   <script>
-    const SUPABASE_URL = "HIER_DEINE_SUPABASE_URL";
-const SUPABASE_ANON_KEY = "HIER_DEIN_ANON_KEY";
-
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-let currentUser = null;
-let currentProfile = null;
-
-async function signUp() {
-  const email = document.getElementById("authEmail").value.trim();
-  const password = document.getElementById("authPassword").value;
-
-  if (!email || !password) {
-    alert("Please enter email and password.");
-    return;
-  }
-
-  const { error } = await supabase.auth.signUp({
-    email,
-    password,
-  });
-
-  if (error) {
-    alert(error.message);
-    return;
-  }
-
-  alert("Account created. Check your email if confirmation is enabled.");
-  await loadUserState();
-}
-
-async function signIn() {
-  const email = document.getElementById("authEmail").value.trim();
-  const password = document.getElementById("authPassword").value;
-
-  if (!email || !password) {
-    alert("Please enter email and password.");
-    return;
-  }
-
-  const { error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
-
-  if (error) {
-    alert(error.message);
-    return;
-  }
-
-  await loadUserState();
-}
-
-async function signOutUser() {
-  const { error } = await supabase.auth.signOut();
-
-  if (error) {
-    alert(error.message);
-    return;
-  }
-
-  currentUser = null;
-  currentProfile = null;
-  await loadUserState();
-}
-
-async function fetchProfile(userId) {
-  const { data, error } = await supabase
-    .from("profiles")
-    .select("id, email, plan, subscription_status, stripe_customer_id, stripe_subscription_id, current_period_end")
-    .eq("id", userId)
-    .single();
-
-  if (error) {
-    console.error("Profile load error:", error.message);
-    return null;
-  }
-
-  return data;
-}
-
-function isPremium() {
-  return currentProfile?.plan === "premium" &&
-         (currentProfile?.subscription_status === "active" ||
-          currentProfile?.subscription_status === "trialing");
-}
-
-async function loadUserState() {
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
-  currentUser = session?.user ?? null;
-  currentProfile = null;
-
-  if (currentUser) {
-    currentProfile = await fetchProfile(currentUser.id);
-  }
-
-  renderAuthUI();
-  refreshPremiumUI();
-}
-
-function renderAuthUI() {
-  const loggedOut = document.getElementById("authLoggedOut");
-  const loggedIn = document.getElementById("authLoggedIn");
-
-  if (!currentUser) {
-    loggedOut.style.display = "block";
-    loggedIn.style.display = "none";
-    return;
-  }
-
-  loggedOut.style.display = "none";
-  loggedIn.style.display = "block";
-
-  document.getElementById("userEmailText").textContent =
-    currentUser.email || currentProfile?.email || "-";
-
-  document.getElementById("userPlanText").textContent =
-    currentProfile?.plan === "premium" ? "Premium" : "Free";
-
-  document.getElementById("userSubStatusText").textContent =
-    currentProfile?.subscription_status || "inactive";
-}
-
-supabase.auth.onAuthStateChange(async () => {
-  await loadUserState();
-});
     const PREMIUM_STORAGE_KEY = "bondstats_scenario_premium";
     const SAVED_STORAGE_KEY = "bondstats_saved_scenarios_final";
     const PORTFOLIO_STORAGE_KEY = "bondstats_portfolio_final";
-
     function isPremium() {
       return localStorage.getItem(PREMIUM_STORAGE_KEY) === "1";
     }
-
     function activatePremiumPreview() {
       localStorage.setItem(PREMIUM_STORAGE_KEY, "1");
       closePremiumModal();
@@ -1425,7 +1077,6 @@ supabase.auth.onAuthStateChange(async () => {
       renderPortfolio();
       alert("Premium preview enabled in this browser.");
     }
-
     function togglePremiumPreview() {
       if (isPremium()) {
         localStorage.removeItem(PREMIUM_STORAGE_KEY);
@@ -1436,47 +1087,36 @@ supabase.auth.onAuthStateChange(async () => {
       renderSavedScenarios();
       renderPortfolio();
     }
-
     function openPremiumModal() {
       document.getElementById("premiumModal").classList.add("show");
     }
-
     function closePremiumModal() {
       document.getElementById("premiumModal").classList.remove("show");
     }
-
     function refreshPremiumUI() {
-  const premium = isPremium();
-
-  document.getElementById("currentPlanLabel").textContent = premium ? "Premium" : "Free";
-  document.getElementById("premiumExportStatus").textContent = premium ? "Premium" : "Free";
-
-  document.getElementById("savedOverlay").classList.toggle("show", !premium);
-  document.getElementById("exportOverlay").classList.toggle("show", !premium);
-  document.getElementById("portfolioOverlay").classList.toggle("show", !premium);
-  document.getElementById("templatesOverlay").classList.toggle("show", !premium);
-}
-
+      const premium = isPremium();
+      document.getElementById("currentPlanLabel").textContent = premium ? "Premium" : "Free";
+      document.getElementById("premiumExportStatus").textContent = premium ? "Premium" : "Free";
+      document.getElementById("savedOverlay").classList.toggle("show", !premium);
+      document.getElementById("exportOverlay").classList.toggle("show", !premium);
+      document.getElementById("portfolioOverlay").classList.toggle("show", !premium);
+    }
     function fmtPct(value) {
       const sign = value > 0 ? "+" : "";
       return `${sign}${value.toFixed(2)}%`;
     }
-
     function fmtPlainMoney(value) {
       const sign = value > 0 ? "+" : value < 0 ? "-" : "";
       return `${sign}$${Math.abs(value).toLocaleString(undefined, { maximumFractionDigits: 0 })}`;
     }
-
     function fmtMoneyHTML(value) {
       const cls = value > 0 ? "positive" : value < 0 ? "negative" : "neutral";
       return `<span class="${cls}">${fmtPlainMoney(value)}</span>`;
     }
-
     function setShock(bps) {
       document.getElementById("shockInput").value = bps;
       runScenario();
     }
-
     function applyBondPreset() {
       const preset = document.getElementById("bondPreset").value;
       const presets = {
@@ -1485,7 +1125,6 @@ supabase.auth.onAuthStateChange(async () => {
         benchmark: { duration: 7.5, convexity: 0.80, yield: 4.25 },
         long: { duration: 17.5, convexity: 3.20, yield: 4.45 }
       };
-
       if (preset !== "custom" && presets[preset]) {
         document.getElementById("durationInput").value = presets[preset].duration;
         document.getElementById("convexityInput").value = presets[preset].convexity;
@@ -1493,10 +1132,8 @@ supabase.auth.onAuthStateChange(async () => {
         runScenario();
       }
     }
-
     function applyMacroPreset() {
       const preset = document.getElementById("macroPreset").value;
-
       const presets = {
         hawkish_fed: {
           shock: 50,
@@ -1524,17 +1161,14 @@ supabase.auth.onAuthStateChange(async () => {
           notes: "Sticky inflation reprices yields higher"
         }
       };
-
       if (preset === "custom") return;
       const p = presets[preset];
       if (!p) return;
-
       document.getElementById("shockInput").value = p.shock;
       document.getElementById("nameInput").value = p.label;
       document.getElementById("scenarioNotesInput").value = p.notes;
       runScenario();
     }
-
     function computeScenario(shockBps, currentYield, duration, convexity, position) {
       const dy = shockBps / 10000;
       const priceChange = (-duration * dy) + (0.5 * convexity * dy * dy);
@@ -1542,7 +1176,6 @@ supabase.auth.onAuthStateChange(async () => {
       const pnl = position * priceChange;
       const newYield = currentYield + shockBps / 100;
       const dv01 = position * duration * 0.0001;
-
       return {
         currentYield,
         duration,
@@ -1554,14 +1187,12 @@ supabase.auth.onAuthStateChange(async () => {
         dv01
       };
     }
-
     function computeBaseScenario() {
       const currentYield = Number(document.getElementById("yieldInput").value);
       const shockBps = Number(document.getElementById("shockInput").value);
       const duration = Number(document.getElementById("durationInput").value);
       const convexity = Number(document.getElementById("convexityInput").value);
       const position = Number(document.getElementById("positionInput").value);
-
       return {
         shockBps,
         label: document.getElementById("nameInput").value || "Base Scenario",
@@ -1569,7 +1200,6 @@ supabase.auth.onAuthStateChange(async () => {
         result: computeScenario(shockBps, currentYield, duration, convexity, position)
       };
     }
-
     function classifyScenario(shockBps) {
       const absShock = Math.abs(shockBps);
       if (absShock <= 25) return "Mild";
@@ -1577,31 +1207,25 @@ supabase.auth.onAuthStateChange(async () => {
       if (absShock <= 100) return "Material";
       return "Stress";
     }
-
     function stressScore(shockBps, duration) {
       const score = Math.abs(shockBps) * duration / 100;
       if (score < 3) return { text: "Low", cls: "score-low" };
       if (score < 7) return { text: "Medium", cls: "score-medium" };
       return { text: "High", cls: "score-high" };
     }
-
     function scenarioNarrative(shockBps, priceChangePct, newYield) {
       const bondDirection =
         priceChangePct > 0 ? "rise" :
         priceChangePct < 0 ? "fall" :
         "remain broadly unchanged";
-
       if (shockBps > 0) {
         return `If yields move ${Math.abs(shockBps)} bps higher, the bond is estimated to ${bondDirection}. The simulated end-yield would be ${newYield.toFixed(2)}%, implying price pressure on longer-duration exposure.`;
       }
-
       if (shockBps < 0) {
         return `If yields move ${Math.abs(shockBps)} bps lower, the bond is estimated to ${bondDirection}. The simulated end-yield would be ${newYield.toFixed(2)}%, implying support for rate-sensitive positions.`;
       }
-
       return `With no rate shock applied, the bond is modeled as broadly unchanged. The simulated end-yield remains ${newYield.toFixed(2)}%.`;
     }
-
     function buildSummary(label, shockBps, notes, result, scenarioType, stress) {
       return [
         `Scenario: ${label}`,
@@ -1619,7 +1243,6 @@ supabase.auth.onAuthStateChange(async () => {
         `Notes: ${notes || "—"}`
       ].join("\n");
     }
-
     function buildExportText(base, scenarioType, stress) {
       const r = base.result;
       return [
@@ -1643,20 +1266,16 @@ supabase.auth.onAuthStateChange(async () => {
         scenarioNarrative(base.shockBps, r.priceChangePct, r.newYield)
       ].join("\n");
     }
-
     function updateExportPreview() {
       const base = computeBaseScenario();
       const result = base.result;
       const scenarioType = classifyScenario(base.shockBps);
       const stress = stressScore(base.shockBps, result.duration);
-
       document.getElementById("exportTextBox").value =
         buildExportText(base, scenarioType, stress);
-
       document.getElementById("reportPreview").innerHTML = `
         <div class="report-title">Bond Scenario Report</div>
         <div class="report-sub">Generated by BondStats Scenario Simulator</div>
-
         <div class="report-grid">
           <div class="report-metric">
             <div class="report-metric-label">Scenario Label</div>
@@ -1683,7 +1302,6 @@ supabase.auth.onAuthStateChange(async () => {
             <div class="report-metric-value">$${result.dv01.toLocaleString(undefined, { maximumFractionDigits: 0 })}</div>
           </div>
         </div>
-
         <div class="report-box">
           <strong>Scenario Details</strong><br><br>
           Current Yield: ${result.currentYield.toFixed(2)}%<br>
@@ -1694,36 +1312,30 @@ supabase.auth.onAuthStateChange(async () => {
           Stress Score: ${stress.text}<br>
           Notes: ${base.notes || "—"}
         </div>
-
         <div class="report-box">
           <strong>Interpretation</strong><br><br>
           ${scenarioNarrative(base.shockBps, result.priceChangePct, result.newYield)}
         </div>
       `;
     }
-
     function printReport() {
       updateExportPreview();
       window.print();
     }
-
     function printReportGuarded() {
       if (!isPremium()) return openPremiumModal();
       printReport();
     }
-
     function copyExportText() {
       const text = document.getElementById("exportTextBox").value;
       navigator.clipboard.writeText(text)
         .then(() => alert("Report text copied."))
         .catch(() => alert("Could not copy report text."));
     }
-
     function copyExportTextGuarded() {
       if (!isPremium()) return openPremiumModal();
       copyExportText();
     }
-
     function downloadReportHTML() {
       updateExportPreview();
       const preview = document.getElementById("reportPreview").innerHTML;
@@ -1735,6 +1347,139 @@ supabase.auth.onAuthStateChange(async () => {
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Bond Scenario Report</title>
 <style>
+/* =========================
+   GLOBAL DESIGN SYSTEM
+========================= */
+:root{
+--bg:#06101d;
+--bg2:#0a1322;
+--panel:#0c1728;
+--panel2:#0f1c30;
+--border:rgba(255,255,255,0.08);
+--text:#f8fafc;
+--muted:#94a3b8;
+--blue:#3b82f6;
+--green:#22c55e;
+--red:#ef4444;
+--purple:#8b5cf6;
+--radius:18px;
+}
+*{box-sizing:border-box;}
+body{
+margin:0;
+font-family:Arial;
+background:linear-gradient(180deg,var(--bg),var(--bg2));
+color:var(--text);
+padding:24px;
+}
+.wrap{max-width:1400px;margin:auto;}
+/* =========================
+   TYPOGRAPHY
+========================= */
+h1{font-size:58px;margin:0 0 10px;}
+h2{margin:0 0 14px;font-size:28px;}
+h3{margin:0 0 10px;}
+.small{color:var(--muted);font-size:14px;line-height:1.6;}
+/* =========================
+   CARDS
+========================= */
+.card{
+background:linear-gradient(180deg,var(--panel),var(--panel2));
+border:1px solid var(--border);
+border-radius:var(--radius);
+padding:22px;
+margin-bottom:20px;
+box-shadow:0 20px 40px rgba(0,0,0,0.4);
+position:relative;
+}
+/* =========================
+   GRID SYSTEM
+========================= */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+/* =========================
+   INPUTS
+========================= */
+input,select,textarea,button{
+padding:13px;
+border-radius:12px;
+border:1px solid var(--border);
+font-size:14px;
+}
+input,select{
+background:white;
+color:black;
+}
+textarea{
+width:100%;
+min-height:120px;
+background:#020617;
+color:white;
+}
+button{
+background:var(--blue);
+color:white;
+font-weight:700;
+cursor:pointer;
+border:none;
+}
+.secondary{background:#1e293b;}
+.success{background:var(--green);}
+.premium{background:var(--purple);}
+.danger{background:var(--red);}
+/* =========================
+   METRICS
+========================= */
+.metric{
+font-size:30px;
+font-weight:700;
+}
+.metric-box{
+background:rgba(255,255,255,0.03);
+border:1px solid var(--border);
+border-radius:14px;
+padding:16px;
+}
+/* =========================
+   OVERLAY LOCK
+========================= */
+.overlay{
+position:absolute;
+inset:0;
+background:rgba(0,0,0,0.75);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:10;
+}
+.overlay.show{display:flex;}
+.overlay-box{
+background:#020617;
+padding:26px;
+border-radius:14px;
+text-align:center;
+max-width:400px;
+}
+/* =========================
+   TABLE
+========================= */
+table{
+width:100%;
+border-collapse:collapse;
+}
+td,th{
+padding:10px;
+border-bottom:1px solid var(--border);
+text-align:left;
+}
+/* =========================
+   RESPONSIVE
+========================= */
+@media(max-width:1000px){
+.grid2,.grid3,.grid4{grid-template-columns:1fr;}
+h1{font-size:40px;}
+}
 body { font-family: Arial, sans-serif; padding: 32px; color: #111827; max-width: 900px; margin: auto; }
 .report-title { font-size: 32px; font-weight: 700; margin-bottom: 8px; }
 .report-sub { color: #475569; margin-bottom: 22px; line-height: 1.6; }
@@ -1747,10 +1492,243 @@ body { font-family: Arial, sans-serif; padding: 32px; color: #111827; max-width:
 </style>
 </head>
 <body>
+<div class="wrap">
+<!-- =========================
+   HERO
+========================= -->
+<h1>Bond Scenario Simulator</h1>
+<p class="small">
+Model bond price sensitivity under rate shocks using duration & convexity.
+Built for scenario analysis — not backtesting.
+</p>
+<!-- =========================
+   SETUP
+========================= -->
+<div class="card">
+<h2>Scenario Setup</h2>
+<div class="grid2">
+<input id="yield" type="number" step="0.01" value="4.25">
+<input id="shock" type="number" value="100">
+</div>
+<div class="grid3" style="margin-top:10px;">
+<input id="duration" value="7.5">
+<input id="convexity" value="0.8">
+<input id="position" value="100000">
+</div>
+<input id="label" value="Base Scenario" style="margin-top:10px;">
+<div class="grid4" style="margin-top:12px;">
+<button onclick="run()">Run Scenario</button>
+<button class="secondary" onclick="copySummary()">Copy</button>
+<button onclick="saveScenarioGuard()">Save</button>
+<button onclick="exportGuard()">Export</button>
+</div>
+</div>
+<!-- =========================
+   RESULT
+========================= -->
+<div class="card">
+<h2>Results</h2>
+<div class="grid4">
+<div class="metric-box"><div class="small">Price Change</div><div id="price" class="metric">-</div></div>
+<div class="metric-box"><div class="small">P/L</div><div id="pl" class="metric">-</div></div>
+<div class="metric-box"><div class="small">New Yield</div><div id="newYield" class="metric">-</div></div>
+<div class="metric-box"><div class="small">DV01</div><div id="dv01" class="metric">-</div></div>
+</div>
+<textarea id="summary" style="margin-top:12px;"></textarea>
+</div>
+<!-- =========================
+   COMPARE
+========================= -->
+<div class="card">
+<h2>Shock Comparison</h2>
+<table>
+<thead>
+<tr>
+<th>Shock</th>
+<th>Price Change</th>
+<th>P/L</th>
+</tr>
+</thead>
+<tbody id="compare"></tbody>
+</table>
+</div>
+<!-- =========================
+   SAVED
+========================= -->
+<div class="card">
+<h2>Saved Scenarios (Premium)</h2>
+<div id="savedOverlay" class="overlay">
+<div class="overlay-box">
+<h3>Premium Feature</h3>
+<p class="small">Unlock scenario saving & workflow tools</p>
+<button onclick="upgrade()">Upgrade</button>
+</div>
+</div>
+<div id="saved"></div>
+</div>
+<!-- =========================
+   PORTFOLIO
+========================= -->
+<div class="card">
+<h2>Portfolio Mode (Premium)</h2>
+<div id="portfolioOverlay" class="overlay">
+<div class="overlay-box">
+<h3>Premium Feature</h3>
+<p class="small">Analyze multiple bonds under one shock</p>
+<button onclick="upgrade()">Upgrade</button>
+</div>
+</div>
+<div id="portfolio"></div>
+<div class="grid3" style="margin-top:10px;">
+<button onclick="addBond()">Add Bond</button>
+<button onclick="runPortfolio()">Run Portfolio</button>
+<button class="danger" onclick="resetPortfolio()">Reset</button>
+</div>
+<textarea id="portfolioSummary" style="margin-top:10px;"></textarea>
+</div>
+</div>
+<script>
+/* =========================
+   PREMIUM SYSTEM
+========================= */
+function isPremium(){
+return localStorage.getItem("premium")==="1";
+}
+function upgrade(){
+localStorage.setItem("premium","1");
+refreshPremium();
+}
+function refreshPremium(){
+document.getElementById("savedOverlay").classList.toggle("show",!isPremium());
+document.getElementById("portfolioOverlay").classList.toggle("show",!isPremium());
+}
+/* =========================
+   CORE ENGINE
+========================= */
+function calc(y,s,d,c,p){
+let dy=s/10000;
+let change=(-d*dy)+(0.5*c*dy*dy);
+return{
+pct:change*100,
+pl:p*change,
+yield:y+s/100,
+dv01:p*d*0.0001
+};
+}
+/* =========================
+   RUN SCENARIO
+========================= */
+function run(){
+let r=calc(+yield.value,+shock.value,+duration.value,+convexity.value,+position.value);
+price.innerText=r.pct.toFixed(2)+"%";
+pl.innerText="$"+Math.round(r.pl);
+newYield.innerText=r.yield.toFixed(2)+"%";
+dv01.innerText="$"+Math.round(r.dv01);
+summary.value=`Scenario: ${label.value}
+Shock: ${shock.value}bps
+Price: ${r.pct.toFixed(2)}%
+P/L: $${Math.round(r.pl)}
+New Yield: ${r.yield.toFixed(2)}%
+DV01: $${Math.round(r.dv01)}`;
+renderCompare();
+}
+/* =========================
+   COMPARE TABLE
+========================= */
+function renderCompare(){
+let shocks=[-100,-50,-25,25,50,100];
+compare.innerHTML=shocks.map(s=>{
+let r=calc(+yield.value,s,+duration.value,+convexity.value,+position.value);
+return `<tr>
+<td>${s} bps</td>
+<td>${r.pct.toFixed(2)}%</td>
+<td>$${Math.round(r.pl)}</td>
+</tr>`;
+}).join("");
+}
+/* =========================
+   COPY
+========================= */
+function copySummary(){
+navigator.clipboard.writeText(summary.value);
+}
+/* =========================
+   SAVE SYSTEM
+========================= */
+function saveScenarioGuard(){
+if(!isPremium()) return upgrade();
+let arr=JSON.parse(localStorage.getItem("saved")||"[]");
+arr.unshift(summary.value);
+localStorage.setItem("saved",JSON.stringify(arr));
+renderSaved();
+}
+function renderSaved(){
+let arr=JSON.parse(localStorage.getItem("saved")||"[]");
+saved.innerHTML=arr.map(x=>`
+<div class="small" style="margin-bottom:8px;">${x}</div>
+`).join("");
+}
+/* =========================
+   EXPORT
+========================= */
+function exportGuard(){
+if(!isPremium()) return upgrade();
+let w=window.open();
+w.document.write("<pre>"+summary.value+"</pre>");
+w.print();
+}
+/* =========================
+   PORTFOLIO
+========================= */
+function addBond(){
+let arr=JSON.parse(localStorage.getItem("portfolio")||"[]");
+arr.push({y:4.2,d:7,c:0.8,p:100000});
+localStorage.setItem("portfolio",JSON.stringify(arr));
+renderPortfolio();
+}
+function renderPortfolio(){
+let arr=JSON.parse(localStorage.getItem("portfolio")||"[]");
+portfolio.innerHTML=arr.map((b,i)=>`
+<div class="grid4">
+<input value="${b.y}" onchange="updateBond(${i},'y',this.value)">
+<input value="${b.d}" onchange="updateBond(${i},'d',this.value)">
+<input value="${b.c}" onchange="updateBond(${i},'c',this.value)">
+<input value="${b.p}" onchange="updateBond(${i},'p',this.value)">
+</div>
+`).join("");
+}
+function updateBond(i,key,val){
+let arr=JSON.parse(localStorage.getItem("portfolio")||"[]");
+arr[i][key]=+val;
+localStorage.setItem("portfolio",JSON.stringify(arr));
+}
+function runPortfolio(){
+if(!isPremium()) return upgrade();
+let arr=JSON.parse(localStorage.getItem("portfolio")||"[]");
+let total=0;
+arr.forEach(b=>{
+let r=calc(b.y,+shock.value,b.d,b.c,b.p);
+total+=r.pl;
+});
+portfolioSummary.value=`Portfolio Shock: ${shock.value}bps
+Total P/L: $${Math.round(total)}`;
+}
+function resetPortfolio(){
+localStorage.removeItem("portfolio");
+renderPortfolio();
+portfolioSummary.value="";
+}
+/* =========================
+   INIT
+========================= */
+run();
+renderSaved();
+renderPortfolio();
+refreshPremium();
+</script>
 ${preview}
 </body>
 </html>`.trim();
-
       const blob = new Blob([html], { type: "text/html" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -1759,34 +1737,26 @@ ${preview}
       a.click();
       URL.revokeObjectURL(url);
     }
-
     function downloadReportHTMLGuarded() {
       if (!isPremium()) return openPremiumModal();
       downloadReportHTML();
     }
-
     function exportPNG() {
       const base = computeBaseScenario();
       const result = base.result;
       const scenarioType = classifyScenario(base.shockBps);
-
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
-
       canvas.width = 1200;
       canvas.height = 820;
-
       ctx.fillStyle = "#0a1322";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-
       ctx.fillStyle = "#60a5fa";
       ctx.font = "bold 38px Arial";
       ctx.fillText("Bond Scenario Report", 50, 70);
-
       ctx.fillStyle = "#cbd5e1";
       ctx.font = "20px Arial";
       ctx.fillText("Generated by BondStats", 50, 105);
-
       const drawBox = (x, y, w, h, label, value) => {
         ctx.fillStyle = "#f8fafc";
         ctx.fillRect(x, y, w, h);
@@ -1799,32 +1769,26 @@ ${preview}
         ctx.font = "bold 26px Arial";
         ctx.fillText(value, x + 18, y + 68);
       };
-
       drawBox(50, 145, 250, 100, "Scenario", base.label);
       drawBox(320, 145, 250, 100, "Shock", `${base.shockBps > 0 ? "+" : ""}${base.shockBps} bps`);
       drawBox(590, 145, 250, 100, "Price Change", `${result.priceChangePct.toFixed(2)}%`);
       drawBox(860, 145, 290, 100, "Estimated P/L", fmtPlainMoney(result.pnl));
-
       drawBox(50, 265, 250, 100, "New Yield", `${result.newYield.toFixed(2)}%`);
       drawBox(320, 265, 250, 100, "DV01", `$${result.dv01.toLocaleString(undefined, { maximumFractionDigits: 0 })}`);
       drawBox(590, 265, 250, 100, "Scenario Type", scenarioType);
       drawBox(860, 265, 290, 100, "Duration", result.duration.toFixed(2));
-
       ctx.fillStyle = "#f8fafc";
       ctx.fillRect(50, 405, 1100, 310);
       ctx.strokeStyle = "#e2e8f0";
       ctx.strokeRect(50, 405, 1100, 310);
-
       ctx.fillStyle = "#111827";
       ctx.font = "bold 22px Arial";
       ctx.fillText("Interpretation", 70, 445);
-
       ctx.font = "18px Arial";
       const text = scenarioNarrative(base.shockBps, result.priceChangePct, result.newYield) + ` Notes: ${base.notes || "—"}`;
       const words = text.split(" ");
       let line = "";
       let y = 485;
-
       for (let i = 0; i < words.length; i++) {
         const testLine = line + words[i] + " ";
         if (ctx.measureText(testLine).width > 1020 && i > 0) {
@@ -1835,30 +1799,24 @@ ${preview}
           line = testLine;
         }
       }
-
       ctx.fillText(line, 70, y);
-
       ctx.fillStyle = "#94a3b8";
       ctx.font = "16px Arial";
       ctx.fillText("bondstats.org", 50, 780);
-
       const link = document.createElement("a");
       link.download = "bondstats-scenario-report.png";
       link.href = canvas.toDataURL("image/png");
       link.click();
     }
-
     function exportPNGGuarded() {
       if (!isPremium()) return openPremiumModal();
       exportPNG();
     }
-
     function renderComparison() {
       const compareBody = document.getElementById("compareBody");
       const base = computeBaseScenario();
       const baseInputs = base.result;
       const shocks = [-100, -50, -25, 25, 50, 100];
-
       compareBody.innerHTML = shocks.map(shock => {
         const result = computeScenario(
           shock,
@@ -1867,12 +1825,10 @@ ${preview}
           baseInputs.convexity,
           baseInputs.position
         );
-
         const interpretation =
           shock > 0
             ? "Rates higher, price pressure"
             : "Rates lower, price support";
-
         return `
           <tr>
             <td>${shock > 0 ? "+" : ""}${shock} bps</td>
@@ -1883,19 +1839,15 @@ ${preview}
         `;
       }).join("");
     }
-
     function renderScenarioCompare() {
       const base = computeBaseScenario();
       const baseInputs = base.result;
-
       const scenarios = [
         { title: "Base", shock: base.shockBps, cls: "base" },
         { title: "Hawkish", shock: Math.max(base.shockBps, 50), cls: "hawkish" },
         { title: "Dovish", shock: Math.min(-50, base.shockBps < 0 ? base.shockBps : -50), cls: "dovish" }
       ];
-
       const box = document.getElementById("scenarioCompareGrid");
-
       box.innerHTML = scenarios.map(s => {
         const result = computeScenario(
           s.shock,
@@ -1904,7 +1856,6 @@ ${preview}
           baseInputs.convexity,
           baseInputs.position
         );
-
         return `
           <div class="scenario-mini ${s.cls}">
             <div class="scenario-mini-title">${s.title}</div>
@@ -1918,23 +1869,18 @@ ${preview}
         `;
       }).join("");
     }
-
     function drawChart() {
       const canvas = document.getElementById("shockChart");
       const ctx = canvas.getContext("2d");
       const width = canvas.width;
       const height = canvas.height;
-
       const base = computeBaseScenario();
       const baseInputs = base.result;
-
       ctx.clearRect(0, 0, width, height);
-
       const shocks = [];
       for (let s = -200; s <= 200; s += 10) {
         shocks.push(s);
       }
-
       const points = shocks.map(s => {
         const res = computeScenario(
           s,
@@ -1945,45 +1891,35 @@ ${preview}
         );
         return { shock: s, value: res.priceChangePct };
       });
-
       const minY = Math.min(...points.map(p => p.value));
       const maxY = Math.max(...points.map(p => p.value));
       const pad = 36;
-
       function xScale(x) {
         return pad + ((x + 200) / 400) * (width - pad * 2);
       }
-
       function yScale(y) {
         return height - pad - ((y - minY) / (maxY - minY || 1)) * (height - pad * 2);
       }
-
       ctx.strokeStyle = "rgba(255,255,255,0.12)";
       ctx.lineWidth = 1;
-
       ctx.beginPath();
       ctx.moveTo(pad, yScale(0));
       ctx.lineTo(width - pad, yScale(0));
       ctx.stroke();
-
       ctx.beginPath();
       ctx.moveTo(xScale(0), pad);
       ctx.lineTo(xScale(0), height - pad);
       ctx.stroke();
-
       ctx.strokeStyle = "#60a5fa";
       ctx.lineWidth = 3;
       ctx.beginPath();
-
       points.forEach((p, i) => {
         const x = xScale(p.shock);
         const y = yScale(p.value);
         if (i === 0) ctx.moveTo(x, y);
         else ctx.lineTo(x, y);
       });
-
       ctx.stroke();
-
       const currentShock = base.shockBps;
       const current = computeScenario(
         currentShock,
@@ -1992,25 +1928,21 @@ ${preview}
         baseInputs.convexity,
         baseInputs.position
       );
-
       ctx.fillStyle = "#22c55e";
       ctx.beginPath();
       ctx.arc(xScale(currentShock), yScale(current.priceChangePct), 6, 0, Math.PI * 2);
       ctx.fill();
-
       ctx.fillStyle = "rgba(255,255,255,0.72)";
       ctx.font = "12px Arial";
       ctx.fillText("-200", xScale(-200) - 15, height - 10);
       ctx.fillText("0", xScale(0) - 4, height - 10);
       ctx.fillText("+200", xScale(200) - 15, height - 10);
     }
-
     function runScenario() {
       const base = computeBaseScenario();
       const result = base.result;
       const scenarioType = classifyScenario(base.shockBps);
       const stress = stressScore(base.shockBps, result.duration);
-
       document.getElementById("priceChangeStat").textContent = fmtPct(result.priceChangePct);
       document.getElementById("plStat").textContent = fmtPlainMoney(result.pnl);
       document.getElementById("newYieldStat").textContent = `${result.newYield.toFixed(2)}%`;
@@ -2019,19 +1951,15 @@ ${preview}
       document.getElementById("positionStat").textContent = `$${result.position.toLocaleString(undefined, { maximumFractionDigits: 0 })}`;
       document.getElementById("scenarioTypeStat").textContent = scenarioType;
       document.getElementById("stressScoreStat").innerHTML = `<span class="score-pill ${stress.cls}">${stress.text}</span>`;
-
       document.getElementById("scenarioText").textContent =
         `${base.label}: ${scenarioNarrative(base.shockBps, result.priceChangePct, result.newYield)}`;
-
       document.getElementById("summaryBox").value =
         buildSummary(base.label, base.shockBps, base.notes, result, scenarioType, stress);
-
       renderComparison();
       renderScenarioCompare();
       drawChart();
       updateExportPreview();
     }
-
     async function copySummary() {
       const text = document.getElementById("summaryBox").value;
       try {
@@ -2041,7 +1969,6 @@ ${preview}
         alert("Could not copy summary.");
       }
     }
-
     function getSavedScenarios() {
       try {
         return JSON.parse(localStorage.getItem(SAVED_STORAGE_KEY) || "[]");
@@ -2049,14 +1976,11 @@ ${preview}
         return [];
       }
     }
-
     function setSavedScenarios(items) {
       localStorage.setItem(SAVED_STORAGE_KEY, JSON.stringify(items));
     }
-
     function saveScenario() {
       const base = computeBaseScenario();
-
       const item = {
         id: Date.now(),
         label: base.label,
@@ -2070,23 +1994,19 @@ ${preview}
         pnl: base.result.pnl,
         createdAt: new Date().toISOString()
       };
-
       const items = getSavedScenarios();
       items.unshift(item);
       setSavedScenarios(items.slice(0, 18));
       renderSavedScenarios();
       alert("Scenario saved.");
     }
-
     function saveScenarioGuarded() {
       if (!isPremium()) return openPremiumModal();
       saveScenario();
     }
-
     function loadSavedScenario(id) {
       const item = getSavedScenarios().find(x => x.id === id);
       if (!item) return;
-
       document.getElementById("nameInput").value = item.label;
       document.getElementById("scenarioNotesInput").value = item.notes || "";
       document.getElementById("yieldInput").value = item.yield;
@@ -2098,22 +2018,18 @@ ${preview}
       document.getElementById("macroPreset").value = "custom";
       runScenario();
     }
-
     function deleteSavedScenario(id) {
       const items = getSavedScenarios().filter(x => x.id !== id);
       setSavedScenarios(items);
       renderSavedScenarios();
     }
-
     function renderSavedScenarios() {
       const box = document.getElementById("savedList");
       const items = getSavedScenarios();
-
       if (!items.length) {
         box.innerHTML = `<div class="saved-meta">No saved scenarios yet.</div>`;
         return;
       }
-
       box.innerHTML = items.map(item => `
         <div class="saved-item">
           <div>
@@ -2131,7 +2047,6 @@ ${preview}
         </div>
       `).join("");
     }
-
     function getPortfolio() {
       try {
         return JSON.parse(localStorage.getItem(PORTFOLIO_STORAGE_KEY) || "[]");
@@ -2139,18 +2054,15 @@ ${preview}
         return [];
       }
     }
-
     function setPortfolio(items) {
       localStorage.setItem(PORTFOLIO_STORAGE_KEY, JSON.stringify(items));
     }
-
     function addPortfolioBond() {
       const items = getPortfolio();
       if (items.length >= 5) {
         alert("Portfolio mode supports up to 5 bonds in this version.");
         return;
       }
-
       items.push({
         id: Date.now(),
         label: `Bond ${items.length + 1}`,
@@ -2159,33 +2071,26 @@ ${preview}
         convexity: 0.8,
         position: 100000
       });
-
       setPortfolio(items);
       renderPortfolio();
     }
-
     function addPortfolioBondGuarded() {
       if (!isPremium()) return openPremiumModal();
       addPortfolioBond();
     }
-
     function removePortfolioBond(id) {
       const items = getPortfolio().filter(x => x.id !== id);
       setPortfolio(items);
       renderPortfolio();
     }
-
     function updatePortfolioField(id, field, value) {
       const items = getPortfolio().map(x => x.id === id ? { ...x, [field]: value } : x);
       setPortfolio(items);
     }
-
     function renderPortfolio() {
       const box = document.getElementById("portfolioList");
       const items = getPortfolio();
-
       document.getElementById("portfolioCountStat").textContent = String(items.length);
-
       if (!items.length) {
         box.innerHTML = `<div class="saved-meta">Portfolio mode is available in Premium.</div>`;
         document.getElementById("portfolioPLStat").textContent = "-";
@@ -2193,7 +2098,6 @@ ${preview}
         document.getElementById("portfolioDurationStat").textContent = "-";
         return;
       }
-
       box.innerHTML = items.map(item => `
         <div class="portfolio-item">
           <div style="flex:1; width:100%;">
@@ -2226,21 +2130,17 @@ ${preview}
         </div>
       `).join("");
     }
-
     function runPortfolioScenario() {
       const shockBps = Number(document.getElementById("shockInput").value);
       const items = getPortfolio();
-
       if (!items.length) {
         alert("Add at least one bond to the portfolio.");
         return;
       }
-
       let totalPosition = 0;
       let totalPL = 0;
       let totalDV01 = 0;
       let weightedDurationSum = 0;
-
       items.forEach(item => {
         const result = computeScenario(
           shockBps,
@@ -2249,20 +2149,16 @@ ${preview}
           Number(item.convexity),
           Number(item.position)
         );
-
         totalPosition += Number(item.position);
         totalPL += result.pnl;
         totalDV01 += result.dv01;
         weightedDurationSum += Number(item.duration) * Number(item.position);
       });
-
       const avgDuration = totalPosition > 0 ? weightedDurationSum / totalPosition : 0;
-
       document.getElementById("portfolioPLStat").textContent = fmtPlainMoney(totalPL);
       document.getElementById("portfolioDV01Stat").textContent =
         `$${totalDV01.toLocaleString(undefined, { maximumFractionDigits: 0 })}`;
       document.getElementById("portfolioDurationStat").textContent = avgDuration.toFixed(2);
-
       document.getElementById("portfolioSummaryBox").value = [
         "Portfolio Scenario Report",
         "",
@@ -2273,23 +2169,19 @@ ${preview}
         `Average Duration: ${avgDuration.toFixed(2)}`
       ].join("\n");
     }
-
     function runPortfolioScenarioGuarded() {
       if (!isPremium()) return openPremiumModal();
       runPortfolioScenario();
     }
-
     function resetPortfolio() {
       localStorage.removeItem(PORTFOLIO_STORAGE_KEY);
       renderPortfolio();
       document.getElementById("portfolioSummaryBox").value = "";
     }
-
     function resetPortfolioGuarded() {
       if (!isPremium()) return openPremiumModal();
       resetPortfolio();
     }
-
     function copyLaunchText() {
       const text =
         "I built a Bond Scenario Simulator to estimate how interest-rate shocks impact bond prices using duration and convexity. Free for core scenarios, with premium workflow features for saved scenarios, exports, and portfolio analysis.";
@@ -2297,17 +2189,11 @@ ${preview}
         .then(() => alert("Launch text copied."))
         .catch(() => alert("Could not copy."));
     }
-
-    async function initApp() {
-  applyBondPreset();
-  runScenario();
-  renderSavedScenarios();
-  renderPortfolio();
-  renderTemplates(); // falls vorhanden, sonst egal
-  await loadUserState();
-}
-
-initApp();
+    applyBondPreset();
+    runScenario();
+    renderSavedScenarios();
+    renderPortfolio();
+    refreshPremiumUI();
   </script>
 </body>
 </html>
