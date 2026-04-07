@@ -846,59 +846,6 @@
       </div>
     </div>
 
-
-    <div class="card" id="authCard" style="margin-bottom:18px;">
-      <div class="section-label">Account</div>
-      <h2>Login</h2>
-
-      <div id="authLoggedOut">
-        <div class="grid-2">
-          <div>
-            <label for="authEmail">Email</label>
-            <input id="authEmail" type="email" placeholder="you@example.com" />
-          </div>
-          <div>
-            <label for="authPassword">Password</label>
-            <input id="authPassword" type="password" placeholder="Your password" />
-          </div>
-        </div>
-
-        <div class="toolbar-3">
-          <button onclick="signUp()">Create account</button>
-          <button class="secondary-btn" onclick="signIn()">Log in</button>
-          <button class="outline-btn" onclick="loadUserState()">Refresh session</button>
-        </div>
-
-        <div class="mini-note">
-          Users need an account so Premium can be tied to a real user ID.
-        </div>
-      </div>
-
-      <div id="authLoggedIn" style="display:none;">
-        <div class="metric-card">
-          <div class="metric-label">Signed in as</div>
-          <div class="metric-value" id="userEmailText" style="font-size:22px;">-</div>
-        </div>
-
-        <div class="grid-2" style="margin-top:12px;">
-          <div class="metric-card">
-            <div class="metric-label">Plan</div>
-            <div class="metric-value" id="userPlanText" style="font-size:22px;">Free</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-label">Subscription Status</div>
-            <div class="metric-value" id="userSubStatusText" style="font-size:22px;">Inactive</div>
-          </div>
-        </div>
-
-        <div class="toolbar-3">
-          <button class="secondary-btn" onclick="openPremiumModal()">Upgrade</button>
-          <button class="outline-btn" onclick="loadUserState()">Refresh</button>
-          <button class="danger-btn" onclick="signOutUser()">Log out</button>
-        </div>
-      </div>
-    </div>
-
     <div class="top-kpis">
       <div class="kpi">
         <div class="kpi-label">Use Case</div>
