@@ -1233,21 +1233,6 @@
     const SAVED_STORAGE_KEY = "bondstats_saved_scenarios_final";
     const PORTFOLIO_STORAGE_KEY = "bondstats_portfolio_final";
 
-    const SUPABASE_URL = "PASTE_YOUR_SUPABASE_URL_HERE";
-    const SUPABASE_ANON_KEY = "PASTE_YOUR_SUPABASE_ANON_KEY_HERE";
-
-    const hasSupabaseConfig =
-      SUPABASE_URL !== "PASTE_YOUR_SUPABASE_URL_HERE" &&
-      SUPABASE_ANON_KEY !== "PASTE_YOUR_SUPABASE_ANON_KEY_HERE" &&
-      !!window.supabase;
-
-    const supabase = hasSupabaseConfig
-      ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
-      : null;
-
-    let currentUser = null;
-    let currentProfile = null;
-
     function isPremium() {
       const dbPremium =
         currentProfile?.plan === "premium" &&
