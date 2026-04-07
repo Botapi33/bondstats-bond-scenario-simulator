@@ -2,16 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-  />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Bond Scenario Simulator | BondStats</title>
   <meta
     name="description"
     content="Estimate how bond prices react to interest-rate shocks using duration and convexity. Built for fixed-income scenario analysis."
   />
   <meta name="theme-color" content="#06101d" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     :root {
@@ -52,7 +50,7 @@
     html {
       scroll-behavior: smooth;
     }
-
+    
     body {
       margin: 0;
       font-family: var(--font-ui);
