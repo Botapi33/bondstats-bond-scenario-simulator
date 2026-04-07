@@ -80,7 +80,7 @@
     }
 
     .eyebrow {
-      display: inline-flex;
+      dlay: inline-flex;
       align-items: center;
       gap: 8px;
       padding: 7px 12px;
@@ -135,7 +135,7 @@
 
     .premium-bar {
       margin-top: 18px;
-      display: flex;
+      dlay: flex;
       justify-content: space-between;
       align-items: center;
       gap: 16px;
@@ -157,7 +157,7 @@
     }
 
     .top-kpis {
-      display: grid;
+      dlay: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 14px;
       margin-top: 22px;
@@ -186,7 +186,7 @@
     }
 
     .layout {
-      display: grid;
+      dlay: grid;
       grid-template-columns: 1.08fr 0.92fr;
       gap: 18px;
       margin-bottom: 18px;
@@ -1280,14 +1280,16 @@ function activatePremiumPreview() {
       document.getElementById("premiumModal").classList.remove("show");
     }
 
-    function refreshPremiumUI() {
-      const premium = isPremium();
-      document.getElementById("currentPlanLabel").textContent = premium ? "Premium" : "Free";
-      document.getElementById("premiumExportStatus").textContent = premium ? "Premium" : "Free";
-      document.getElementById("savedOverlay").classList.toggle("show", !premium);
-      document.getElementById("exportOverlay").classList.toggle("show", !premium);
-      document.getElementById("portfolioOverlay").classList.toggle("show", !premium);
-    }
+   function refreshPremiumUI() {
+  const premium = false;
+
+  document.getElementById("currentPlanLabel").textContent = "Free";
+  document.getElementById("premiumExportStatus").textContent = "Locked";
+
+  document.getElementById("savedOverlay").classList.add("show");
+  document.getElementById("exportOverlay").classList.add("show");
+  document.getElementById("portfolioOverlay").classList.add("show");
+}
 
     function fmtPct(value) {
       const sign = value > 0 ? "+" : "";
