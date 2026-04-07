@@ -632,15 +632,21 @@
     }
 
     .locked-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(6, 16, 29, 0.55), rgba(6, 16, 29, 0.84));
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      z-index: 5;
-    }
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(6, 16, 29, 0.55), rgba(6, 16, 29, 0.84));
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.locked-overlay.show {
+  display: flex;
+  pointer-events: auto;
+}
 
     .locked-overlay.show {
       display: flex;
@@ -676,20 +682,22 @@
       margin-top: 18px;
     }
 
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.65);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      z-index: 50;
-    }
+ .modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 50;
+  pointer-events: none;
+}
 
-    .modal-backdrop.show {
-      display: flex;
-    }
+.modal-backdrop.show {
+  display: flex;
+  pointer-events: auto;
+}
 
     .modal {
       width: 100%;
