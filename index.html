@@ -1297,14 +1297,10 @@
     const SUPABASE_URL = "https://jwjimrfapsnpndgqvvvgv.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp3amltcmZhcHNwbm5kZ3F2dmd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1MjE1MDUsImV4cCI6MjA5MTA5NzUwNX0.CUIoYuVopYKTcDKF2RzaUVWGK1PUNkDCP6l4S6Yixnk";
 
-    const hasSupabaseConfig =
-      SUPABASE_URL !== "https://jwjimrfapsnpndgqvvvgv.supabase.co" &&
-      SUPABASE_ANON_KEY !== "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp3amltcmZhcHNwbm5kZ3F2dmd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1MjE1MDUsImV4cCI6MjA5MTA5NzUwNX0.CUIoYuVopYKTcDKF2RzaUVWGK1PUNkDCP6l4S6Yixnk" &&
-      !!window.supabase;
-
-    const supabase = hasSupabaseConfig
-      ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
-      : null;
+     const supabase =
+  window.supabase && typeof window.supabase.createClient === "function"
+    ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+    : null;
 
     let currentUser = null;
     let currentProfile = null;
