@@ -80,7 +80,7 @@
     }
 
     .eyebrow {
-      dlay: inline-flex;
+      display: inline-flex;
       align-items: center;
       gap: 8px;
       padding: 7px 12px;
@@ -135,7 +135,7 @@
 
     .premium-bar {
       margin-top: 18px;
-      dlay: flex;
+      display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 16px;
@@ -157,7 +157,7 @@
     }
 
     .top-kpis {
-      dlay: grid;
+      display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 14px;
       margin-top: 22px;
@@ -186,7 +186,7 @@
     }
 
     .layout {
-      dlay: grid;
+      display: grid;
       grid-template-columns: 1.08fr 0.92fr;
       gap: 18px;
       margin-bottom: 18px;
@@ -564,7 +564,7 @@
       padding: 20px;
     }
 
-    .report- {
+    .report-preview {
       background: white;
       color: #111827;
       border-radius: 18px;
@@ -949,7 +949,7 @@
           <button onclick="runScenario()">Run Scenario</button>
           <button class="secondary-btn" onclick="copySummary()">Copy Summary</button>
           <button class="secondary-btn" onclick="saveScenarioGuarded()">Save Scenario</button>
-          <button class="secondary-btn" onclick="updateExport()">Refresh Export</button>
+          <button class="secondary-btn" onclick="updateExportPreview()">Refresh Export</button>
         </div>
 
         <div class="mini-note">
@@ -1054,9 +1054,8 @@
               Saved scenarios are part of Premium. Unlock storage, export tools, and portfolio analysis.
             </div>
             <div class="toolbar-2">
-<button class="premium-btn" onclick="window.open('https://buy.stripe.com/9B6fZi7FhdmZ58q9FE4wM00', '_blank')">
-  Upgrade to Premium
-</button>              <button class="outline-btn" onclick="closePremiumModal()">Close</button>
+              <button class="premium-btn" onclick="openPremiumModal()">Upgrade</button>
+              <button class="outline-btn" onclick="closePremiumModal()">Close</button>
             </div>
           </div>
         </div>
@@ -1079,9 +1078,8 @@
           </div>
           <div class="toolbar-2">
 <a href="https://buy.stripe.com/9B6fZi7FhdmZ58q9FE4wM00" target="_blank" rel="noopener noreferrer">
-<button class="premium-btn" onclick="window.open('https://buy.stripe.com/9B6fZi7FhdmZ58q9FE4wM00', '_blank')">
-  Upgrade to Premium
-</button></a>            <button class="outline-btn" onclick="closePremiumModal()">Close</button>
+  <button class="premium-btn">Upgrade</button>
+</a>            <button class="outline-btn" onclick="closePremiumModal()">Close</button>
           </div>
         </div>
       </div>
@@ -1105,10 +1103,10 @@
         </div>
 
         <div class="export-card">
-          <h3>Report </h3>
-          <div id="report" class="report-">
+          <h3>Report Preview</h3>
+          <div id="reportPreview" class="report-preview">
             <div class="report-title">Bond Scenario Report</div>
-            <div class="report-sub">Run a scenario to generate a formatted export .</div>
+            <div class="report-sub">Run a scenario to generate a formatted export preview.</div>
           </div>
         </div>
       </div>
@@ -1125,9 +1123,8 @@
             Portfolio Mode lets users estimate total P/L and DV01 across multiple bond positions under one rate shock.
           </div>
           <div class="toolbar-2">
-<button class="premium-btn" onclick="window.open('https://buy.stripe.com/9B6fZi7FhdmZ58q9FE4wM00', '_blank')">
-  Upgrade to Premium
-</button>            <button class="outline-btn" onclick="closePremiumModal()">Close</button>
+            <button class="premium-btn" onclick="openPremiumModal()">Upgrade</button>
+            <button class="outline-btn" onclick="closePremiumModal()">Close</button>
           </div>
         </div>
       </div>
@@ -1192,9 +1189,8 @@
       </div>
 
       <div class="toolbar-3">
-<button class="premium-btn" onclick="window.open('https://buy.stripe.com/9B6fZi7FhdmZ58q9FE4wM00', '_blank')">
-  Upgrade to Premium
-</button>        <button class="secondary-btn" onclick="copyLaunchText()">Copy Launch Text</button>
+        <button class="premium-btn" onclick="openPremiumModal()">Upgrade to Premium</button>
+        <button class="secondary-btn" onclick="copyLaunchText()">Copy Launch Text</button>
         <button class="premium-btn" onclick="window.open('https://buy.stripe.com/9B6fZi7FhdmZ58q9FE4wM00', '_blank')">
   Upgrade to Premium
 </button>
@@ -1234,9 +1230,8 @@
             <li>Export to PDF / HTML / PNG / report text</li>
             <li>Portfolio mode</li>
           </ul>
-<button class="premium-btn" onclick="window.open('https://buy.stripe.com/9B6fZi7FhdmZ58q9FE4wM00', '_blank')">
-  Get Premium
-</button>        </div>
+          <button class="premium-btn" onclick="activatePremiumPreview()">Preview Premium</button>
+        </div>
       </div>
     </div>
   </div>
@@ -1247,8 +1242,8 @@
     const PORTFOLIO_STORAGE_KEY = "bondstats_portfolio_final";
 
     function isPremium() {
-  return false;
-}
+      return localStorage.getItem(PREMIUM_STORAGE_KEY) === "1";
+    }
 
 function activatePremiumPreview() {
     return;
@@ -1280,7 +1275,7 @@ function activatePremiumPreview() {
       document.getElementById("premiumModal").classList.remove("show");
     }
 
-      function refreshPremiumUI() {
+    function refreshPremiumUI() {
       const premium = isPremium();
       document.getElementById("currentPlanLabel").textContent = premium ? "Premium" : "Free";
       document.getElementById("premiumExportStatus").textContent = premium ? "Premium" : "Free";
