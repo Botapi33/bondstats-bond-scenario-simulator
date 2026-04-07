@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <head>
   <meta charset="UTF-8" />
   <meta
@@ -819,24 +820,24 @@
   </style>
 </head>
 <body>
-  <div class="wrap">
+  ="wrap">
 
-    <div class="hero">
-      <div class="eyebrow">BondStats Product</div>
+    ="hero">
+      ="eyebrow">BondStats Product</div>
       <h1>Bond Scenario Simulator</h1>
       <p class="sub">
         Model bond price sensitivity under rate shocks with a professional scenario workflow. Built for fixed-income analysis, macro framing, and cleaner portfolio decision support.
       </p>
-      <div class="notice">
+      ="notice">
         This tool estimates bond sensitivity using modified duration and convexity. It is designed for scenario analysis and risk framing, not investment advice.
       </div>
 
-      <div class="premium-bar">
+      ="premium-bar">
         <div>
-          <div class="premium-bar-title">
+          ="premium-bar-title">
             Free includes the full single-bond scenario workflow. Premium unlocks saved scenarios, export mode, and portfolio analysis.
           </div>
-          <div class="premium-bar-text">
+          ="premium-bar-text">
             This creates a clean product split: useful for free, professional workflow upgrades in Premium.
           </div>
         </div>
@@ -845,7 +846,57 @@
         </div>
       </div>
     </div>
+<div class="card" id="authCard">
+  <div class="section-label">Account</div>
+  <h2>Login</h2>
 
+  <div id="authLoggedOut">
+    <div class="grid-2">
+      <div>
+        <label for="authEmail">Email</label>
+        <input id="authEmail" type="email" placeholder="you@example.com" />
+      </div>
+      <div>
+        <label for="authPassword">Password</label>
+        <input id="authPassword" type="password" placeholder="Your password" />
+      </div>
+    </div>
+
+    <div class="toolbar-3">
+      <button onclick="signUp()">Create account</button>
+      <button class="secondary-btn" onclick="signIn()">Log in</button>
+      <button class="outline-btn" onclick="loadUserState()">Refresh session</button>
+    </div>
+
+    <div class="mini-note">
+      Users need an account so Premium can be tied to a real user ID.
+    </div>
+  </div>
+
+  <div id="authLoggedIn" style="display:none;">
+    <div class="metric-card">
+      <div class="metric-label">Signed in as</div>
+      <div class="metric-value" id="userEmailText" style="font-size:22px;">-</div>
+    </div>
+
+    <div class="grid-2" style="margin-top:12px;">
+      <div class="metric-card">
+        <div class="metric-label">Plan</div>
+        <div class="metric-value" id="userPlanText" style="font-size:22px;">Free</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Subscription Status</div>
+        <div class="metric-value" id="userSubStatusText" style="font-size:22px;">Inactive</div>
+      </div>
+    </div>
+
+    <div class="toolbar-3">
+      <button class="secondary-btn" onclick="openPremiumModal()">Upgrade</button>
+      <button class="outline-btn" onclick="signOutUser()">Log out</button>
+      <button class="outline-btn" onclick="loadUserState()">Refresh</button>
+    </div>
+  </div>
+</div>
     <div class="top-kpis">
       <div class="kpi">
         <div class="kpi-label">Use Case</div>
@@ -1229,6 +1280,135 @@
   </div>
 
   <script>
+    const SUPABASE_URL = "HIER_DEINE_SUPABASE_URL";
+const SUPABASE_ANON_KEY = "HIER_DEIN_ANON_KEY";
+
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let currentUser = null;
+let currentProfile = null;
+
+async function signUp() {
+  const email = document.getElementById("authEmail").value.trim();
+  const password = document.getElementById("authPassword").value;
+
+  if (!email || !password) {
+    alert("Please enter email and password.");
+    return;
+  }
+
+  const { error } = await supabase.auth.signUp({
+    email,
+    password,
+  });
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  alert("Account created. Check your email if confirmation is enabled.");
+  await loadUserState();
+}
+
+async function signIn() {
+  const email = document.getElementById("authEmail").value.trim();
+  const password = document.getElementById("authPassword").value;
+
+  if (!email || !password) {
+    alert("Please enter email and password.");
+    return;
+  }
+
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  await loadUserState();
+}
+
+async function signOutUser() {
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  currentUser = null;
+  currentProfile = null;
+  await loadUserState();
+}
+
+async function fetchProfile(userId) {
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("id, email, plan, subscription_status, stripe_customer_id, stripe_subscription_id, current_period_end")
+    .eq("id", userId)
+    .single();
+
+  if (error) {
+    console.error("Profile load error:", error.message);
+    return null;
+  }
+
+  return data;
+}
+
+function isPremium() {
+  return currentProfile?.plan === "premium" &&
+         (currentProfile?.subscription_status === "active" ||
+          currentProfile?.subscription_status === "trialing");
+}
+
+async function loadUserState() {
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  currentUser = session?.user ?? null;
+  currentProfile = null;
+
+  if (currentUser) {
+    currentProfile = await fetchProfile(currentUser.id);
+  }
+
+  renderAuthUI();
+  refreshPremiumUI();
+}
+
+function renderAuthUI() {
+  const loggedOut = document.getElementById("authLoggedOut");
+  const loggedIn = document.getElementById("authLoggedIn");
+
+  if (!currentUser) {
+    loggedOut.style.display = "block";
+    loggedIn.style.display = "none";
+    return;
+  }
+
+  loggedOut.style.display = "none";
+  loggedIn.style.display = "block";
+
+  document.getElementById("userEmailText").textContent =
+    currentUser.email || currentProfile?.email || "-";
+
+  document.getElementById("userPlanText").textContent =
+    currentProfile?.plan === "premium" ? "Premium" : "Free";
+
+  document.getElementById("userSubStatusText").textContent =
+    currentProfile?.subscription_status || "inactive";
+}
+
+supabase.auth.onAuthStateChange(async () => {
+  await loadUserState();
+});
     const PREMIUM_STORAGE_KEY = "bondstats_scenario_premium";
     const SAVED_STORAGE_KEY = "bondstats_saved_scenarios_final";
     const PORTFOLIO_STORAGE_KEY = "bondstats_portfolio_final";
@@ -1266,13 +1446,16 @@
     }
 
     function refreshPremiumUI() {
-      const premium = isPremium();
-      document.getElementById("currentPlanLabel").textContent = premium ? "Premium" : "Free";
-      document.getElementById("premiumExportStatus").textContent = premium ? "Premium" : "Free";
-      document.getElementById("savedOverlay").classList.toggle("show", !premium);
-      document.getElementById("exportOverlay").classList.toggle("show", !premium);
-      document.getElementById("portfolioOverlay").classList.toggle("show", !premium);
-    }
+  const premium = isPremium();
+
+  document.getElementById("currentPlanLabel").textContent = premium ? "Premium" : "Free";
+  document.getElementById("premiumExportStatus").textContent = premium ? "Premium" : "Free";
+
+  document.getElementById("savedOverlay").classList.toggle("show", !premium);
+  document.getElementById("exportOverlay").classList.toggle("show", !premium);
+  document.getElementById("portfolioOverlay").classList.toggle("show", !premium);
+  document.getElementById("templatesOverlay").classList.toggle("show", !premium);
+}
 
     function fmtPct(value) {
       const sign = value > 0 ? "+" : "";
@@ -2115,11 +2298,16 @@ ${preview}
         .catch(() => alert("Could not copy."));
     }
 
-    applyBondPreset();
-    runScenario();
-    renderSavedScenarios();
-    renderPortfolio();
-    refreshPremiumUI();
+    async function initApp() {
+  applyBondPreset();
+  runScenario();
+  renderSavedScenarios();
+  renderPortfolio();
+  renderTemplates(); // falls vorhanden, sonst egal
+  await loadUserState();
+}
+
+initApp();
   </script>
 </body>
 </html>
