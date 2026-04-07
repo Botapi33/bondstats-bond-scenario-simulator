@@ -564,7 +564,7 @@
       padding: 20px;
     }
 
-    .report-preview {
+    .report- {
       background: white;
       color: #111827;
       border-radius: 18px;
@@ -949,7 +949,7 @@
           <button onclick="runScenario()">Run Scenario</button>
           <button class="secondary-btn" onclick="copySummary()">Copy Summary</button>
           <button class="secondary-btn" onclick="saveScenarioGuarded()">Save Scenario</button>
-          <button class="secondary-btn" onclick="updateExportPreview()">Refresh Export</button>
+          <button class="secondary-btn" onclick="updateExport()">Refresh Export</button>
         </div>
 
         <div class="mini-note">
@@ -1103,10 +1103,10 @@
         </div>
 
         <div class="export-card">
-          <h3>Report Preview</h3>
-          <div id="reportPreview" class="report-preview">
+          <h3>Report </h3>
+          <div id="report" class="report-">
             <div class="report-title">Bond Scenario Report</div>
-            <div class="report-sub">Run a scenario to generate a formatted export preview.</div>
+            <div class="report-sub">Run a scenario to generate a formatted export .</div>
           </div>
         </div>
       </div>
@@ -1230,8 +1230,9 @@
             <li>Export to PDF / HTML / PNG / report text</li>
             <li>Portfolio mode</li>
           </ul>
-          <button class="premium-btn" onclick="activatePremiumPreview()">Preview Premium</button>
-        </div>
+<button class="premium-btn" onclick="window.open('https://buy.stripe.com/9B6fZi7FhdmZ58q9FE4wM00', '_blank')">
+  Get Premium
+</button>        </div>
       </div>
     </div>
   </div>
